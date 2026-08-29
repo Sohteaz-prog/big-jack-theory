@@ -1,5 +1,10 @@
-// Service worker : met l'application en cache pour un fonctionnement hors ligne.
-const CACHE = "big-jack-theory-v1";
+// Service worker de Big Jack Theory.
+//
+// Stratégie : réseau d'abord pour la page, cache d'abord pour les ressources
+// fixes. Une mise à jour déposée sur l'hébergeur est donc prise en compte au
+// lancement suivant si le téléphone est connecté, et l'application reste
+// utilisable hors ligne dans tous les cas.
+const CACHE = "big-jack-theory-v2";
 const FICHIERS = [
   "./",
   "./index.html",
@@ -21,9 +26,30 @@ self.addEventListener("activate", (e) => {
   );
 });
 
-// Cache d'abord : l'application fonctionne sans réseau.
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
+
+  const estPage =
+    e.request.mode === "navigate" ||
+    (e.request.destination === "document") ||
+    e.request.url.endsWith("/") ||
+    e.request.url.endsWith("index.html");
+
+  if (estPage) {
+    // Réseau d'abord : la dernière version publiée l'emporte.
+    e.respondWith(
+      fetch(e.request)
+        .then((rep) => {
+          const copie = rep.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, copie)).catch(() => {});
+          return rep;
+        })
+        .catch(() => caches.match(e.request).then((r) => r || caches.match("./index.html")))
+    );
+    return;
+  }
+
+  // Ressources fixes : cache d'abord, réseau en secours.
   e.respondWith(
     caches.match(e.request).then((rep) => rep || fetch(e.request).catch(() => caches.match("./index.html")))
   );
