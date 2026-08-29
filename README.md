@@ -30,22 +30,34 @@ perte, export et import CSV.
 **Théorie** — Fiche détaillée par système, comparatif des neuf, lexique de
 26 entrées, bibliographie.
 
-**Paramètres** — Profils de table, relevé des sept points à vérifier sur place,
-sauvegarde complète, code de protection des suppressions.
+**Paramètres** — Quatre sections dépliables, chacune résumant sa configuration
+sans qu'on ait à l'ouvrir : votre table (paquets, coupe, règles, paiement,
+mélangeur, mises), comptage, apparence et sons, limites de jeu. S'y ajoutent les
+profils de table, la sauvegarde et le code de protection.
 
 ## Vos données
 
 Réglages, journal et profil d'entraînement sont enregistrés automatiquement dans
 le navigateur, et survivent aux mises à jour de l'application.
 
-Ils sont en revanche liés à l'adresse d'où l'application est ouverte : changer
-d'hébergement ou vider les données du navigateur les rend inaccessibles. Les
-Paramètres proposent donc **Télécharger une sauvegarde**, un fichier contenant
-l'ensemble, et **Restaurer** pour le relire. Faites-en une avant tout changement.
+Le bouton **Sauvegarder** des Paramètres fait deux choses d'un coup : une copie
+dans l'application, restaurable en un clic, et un fichier téléchargé à conserver
+ailleurs. La date de la dernière sauvegarde est affichée.
+
+**Restaurer** reprend la copie interne ; un lien permet de partir d'un fichier.
+
+Deux réinitialisations sont proposées : **les réglages** seuls, ou
+**l'application** entière — journal, entraînement, sauvegarde interne et code
+compris, ce qui ramène à l'état d'une première installation.
 
 Un code à quatre chiffres, facultatif, peut être exigé avant toute suppression.
 Il protège des fausses manœuvres, non d'une personne déterminée : qui a accès à
 l'appareil peut vider le stockage du navigateur sans passer par l'application.
+
+En cas d'oubli, une **clé de secours** saisie à la place du code le retire. Elle
+est définie dans `index.html`, à la ligne `CLE_SECOURS`, et se change en
+republiant le fichier. Comme le reste du code source, elle est lisible par qui
+ouvre le fichier : elle dépanne, elle ne protège pas.
 
 ## Origine des chiffres
 
@@ -79,10 +91,23 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.9**, du 29 août 2026.
+Version actuelle : **1.22**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.22 | doublement après séparation : effet réel sur le tableau, choix déplacé sur la page Stratégie |
+| 1.21 | le calculateur de risque part des mises de votre table |
+| 1.20 | clé de secours pour un code oublié |
+| 1.19 | code exigé pour supprimer une session |
+| 1.18 | suppression d'une session : confirmation en deux temps |
+| 1.17 | sauvegarde unifiée, sept boutons ramenés à quatre |
+| 1.16 | « Réinitialiser tout » devient « Réinitialiser l'application » |
+| 1.15 | historique des séries : « tout effacer » rétabli |
+| 1.14 | libellés de réinitialisation harmonisés |
+| 1.13 | effacement total possible depuis l'application |
+| 1.12 | « Tout effacer » renommé « Réinitialiser l'application » |
+| 1.11 | paramètres réorganisés en sections dépliables |
+| 1.10 | sauvegarde interne restaurable en un clic, date affichée |
 | 1.9 | retouches de formulation |
 | 1.8 | textes du code de protection resserrés |
 | 1.7 | paquets restreints à 4, 6 et 8 — le simple et le double paquet ont disparu d'Europe |
