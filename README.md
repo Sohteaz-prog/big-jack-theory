@@ -91,10 +91,13 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.59**, du 29 août 2026.
+Version actuelle : **1.62**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.62 | page des mises réorganisée en trois sections |
+| 1.61 | décompte automatique seulement si les neutres sont comptées |
+| 1.60 | paquets restants déduits des cartes comptées |
 | 1.59 | étiquettes hautes basculées sous leur point |
 | 1.58 | montants annotés sur la courbe cumulée |
 | 1.57 | correction d'une session directement sous sa ligne |
