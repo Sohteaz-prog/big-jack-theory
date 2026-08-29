@@ -91,10 +91,12 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.62**, du 29 août 2026.
+Version actuelle : **1.64**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.64 | sections des mises fermées à l'ouverture |
+| 1.63 | lieux déjà saisis proposés dans le journal |
 | 1.62 | page des mises réorganisée en trois sections |
 | 1.61 | décompte automatique seulement si les neutres sont comptées |
 | 1.60 | paquets restants déduits des cartes comptées |
