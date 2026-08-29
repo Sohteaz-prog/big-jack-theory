@@ -51,6 +51,16 @@ Cette application sert à mesurer et à s'entraîner. Elle ne promet aucun gain,
 le journal existe précisément pour que les résultats réels soient visibles plutôt
 que reconstitués de mémoire.
 
+## Versions
+
+Le numéro s'affiche en pied de page et dans les paramètres. Il permet de vérifier
+qu'une mise à jour publiée a bien remplacé l'ancienne.
+
+- **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
+- **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
+
+Version actuelle : **1.0**, du 29 août 2026.
+
 ## Licence
 
 Tous droits réservés. Voir `LICENSE.txt`.
