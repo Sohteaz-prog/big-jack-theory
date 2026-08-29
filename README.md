@@ -10,22 +10,42 @@ progression restent dans le navigateur de l'appareil.
 
 **Stratégie** — Le tableau des mains dures, souples et paires, avec l'espérance
 de chaque option calculée pour vos règles de table. Une section distincte
-examine les progressions de mise et un calculateur de risque de ruine.
+examine les progressions de mise et un calculateur de risque de ruine, qui
+compare les six façons de miser avec votre unité et votre capital.
 
-**Compteur** — Neuf systèmes de comptage : Hi-Lo, KO, Red 7, Hi-Opt I et II,
-Omega II, Zen, Wong Halves, Ace-Five. Compte courant, vrai compte, pénétration
-et mise indicative.
+**Compteur** — Neuf systèmes : Hi-Lo, KO, Red 7, Hi-Opt I et II, Omega II, Zen,
+Wong Halves, Ace-Five. Compte courant, vrai compte, pénétration, mise indicative
+et gain horaire selon la profondeur de coupe.
 
-**Exercices** — Cinq entraînements : stratégie de base, valeur des cartes,
-défilé chronométré, conversion en vrai compte, indices de déviation. Un
-indicateur mesure si l'exécution est suffisante pour jouer en conditions
-réelles.
+**Exercices** — Cinq entraînements : stratégie de base, valeur de carte, défilé
+chronométré, vrai compte, indices de déviation. Séries de longueur choisie avec
+bilan, suivi des erreurs classées par coût, et un indicateur « prêt pour la
+table » fondé sur vos dernières réponses plutôt que sur votre historique
+complet.
 
 **Journal** — Sessions, résultat net, rendement mesuré rapporté aux sommes
-engagées, comparaison par lieu, export et import CSV.
+engagées, courbe cumulée, comparaison par lieu, filtres par période, plafond de
+perte, export et import CSV.
 
 **Théorie** — Fiche détaillée par système, comparatif des neuf, lexique de
 26 entrées, bibliographie.
+
+**Paramètres** — Profils de table, relevé des sept points à vérifier sur place,
+sauvegarde complète, code de protection des suppressions.
+
+## Vos données
+
+Réglages, journal et profil d'entraînement sont enregistrés automatiquement dans
+le navigateur, et survivent aux mises à jour de l'application.
+
+Ils sont en revanche liés à l'adresse d'où l'application est ouverte : changer
+d'hébergement ou vider les données du navigateur les rend inaccessibles. Les
+Paramètres proposent donc **Télécharger une sauvegarde**, un fichier contenant
+l'ensemble, et **Restaurer** pour le relire. Faites-en une avant tout changement.
+
+Un code à quatre chiffres, facultatif, peut être exigé avant toute suppression.
+Il protège des fausses manœuvres, non d'une personne déterminée : qui a accès à
+l'appareil peut vider le stockage du navigateur sans passer par l'application.
 
 ## Origine des chiffres
 
@@ -59,7 +79,20 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.0**, du 29 août 2026.
+Version actuelle : **1.9**, du 29 août 2026.
+
+| | |
+|---|---|
+| 1.9 | retouches de formulation |
+| 1.8 | textes du code de protection resserrés |
+| 1.7 | paquets restreints à 4, 6 et 8 — le simple et le double paquet ont disparu d'Europe |
+| 1.6 | code de protection des suppressions |
+| 1.5 | réinitialisation totale |
+| 1.4 | sauvegarde complète et restauration |
+| 1.3 | noms d'exercices harmonisés |
+| 1.2 | correction du défilement au rechargement |
+| 1.1 | contraste des afficheurs en thème sombre |
+| 1.0 | première publication |
 
 ## Licence
 
