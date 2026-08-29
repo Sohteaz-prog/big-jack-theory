@@ -91,10 +91,19 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.35**, du 29 août 2026.
+Version actuelle : **1.44**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.44 | apparence et sons déplacés après les limites de jeu |
+| 1.43 | accents plus francs en thème clair |
+| 1.42 | deux thèmes casino : tapis vert et velours rouge |
+| 1.41 | hiérarchie des fonds identique dans les deux thèmes |
+| 1.40 | fond des sections dépliées plus contrasté |
+| 1.39 | fond distinct pour les sections dépliées |
+| 1.38 | section dépliée encadrée dans la continuité du liseré doré |
+| 1.37 | démarcation des sections dépliées |
+| 1.36 | correction de structure des paramètres, ajout de table clarifié |
 | 1.35 | espérances calculées sur le total exact des lignes regroupées |
 | 1.34 | recherche rapide dans la stratégie de base |
 | 1.33 | titres distincts, contrastes renforcés, mains souples allégées |
