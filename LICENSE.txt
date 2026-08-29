@@ -1,0 +1,19 @@
+Big Jack Theory
+Copyright (c) 2026
+
+Tous droits réservés.
+
+Ce code est publié pour permettre l'hébergement de l'application par son auteur.
+Il n'est pas placé dans le domaine public et aucune licence d'utilisation n'est
+accordée.
+
+Sont notamment interdits sans autorisation écrite préalable :
+  - la redistribution, publique ou privée, de tout ou partie de ce code ;
+  - l'exploitation commerciale, directe ou indirecte ;
+  - la publication d'une œuvre dérivée.
+
+La consultation du code à des fins d'étude personnelle est libre.
+
+CE LOGICIEL EST FOURNI SANS GARANTIE D'AUCUNE SORTE. Les calculs qu'il produit
+sont donnés à titre informatif. L'auteur ne saurait être tenu responsable de
+pertes financières résultant de son utilisation.

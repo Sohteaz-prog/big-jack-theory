@@ -1,0 +1,19 @@
+{
+  "name": "Big Jack Theory",
+  "short_name": "BJ Theory",
+  "description": "Stratégie de base, comptage de cartes, exercices et journal de sessions.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#DCDDD7",
+  "theme_color": "#0F1114",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["education", "utilities"],
+  "icons": [
+    { "src": "icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icone-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
