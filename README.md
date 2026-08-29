@@ -91,10 +91,12 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.33**, du 29 août 2026.
+Version actuelle : **1.35**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.35 | espérances calculées sur le total exact des lignes regroupées |
+| 1.34 | recherche rapide dans la stratégie de base |
 | 1.33 | titres distincts, contrastes renforcés, mains souples allégées |
 | 1.32 | enregistrement d'une table déplacé en fin de page |
 | 1.31 | checklist « Que relever à la table » |
