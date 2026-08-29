@@ -91,10 +91,11 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.44**, du 29 août 2026.
+Version actuelle : **1.45**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.45 | toutes les sections de paramètres fermées à l'ouverture |
 | 1.44 | apparence et sons déplacés après les limites de jeu |
 | 1.43 | accents plus francs en thème clair |
 | 1.42 | deux thèmes casino : tapis vert et velours rouge |
