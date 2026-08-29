@@ -91,10 +91,21 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
 - **1.0, 1.1, 1.2 …** — ajustements, corrections, réglages, retouches d'écran.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.22**, du 29 août 2026.
+Version actuelle : **1.33**, du 29 août 2026.
 
 | | |
 |---|---|
+| 1.33 | titres distincts, contrastes renforcés, mains souples allégées |
+| 1.32 | enregistrement d'une table déplacé en fin de page |
+| 1.31 | checklist « Que relever à la table » |
+| 1.30 | tables nommées : enregistrez vos relevés sous le nom du casino |
+| 1.29 | profils physiques et européens en 6 et 8 paquets, coupe non supposée |
+| 1.28 | profil « Casino terrestre — 8 paquets » |
+| 1.27 | la réinitialisation complète ramène à l'accueil |
+| 1.26 | sabot conservé trente minutes après une interruption |
+| 1.25 | champs numériques corrigés, capital de jeu réglable |
+| 1.24 | afficheurs clairs en thème clair, en-têtes de section adoucis |
+| 1.23 | l'application rouvre sur le dernier écran consulté |
 | 1.22 | doublement après séparation : effet réel sur le tableau, choix déplacé sur la page Stratégie |
 | 1.21 | le calculateur de risque part des mises de votre table |
 | 1.20 | clé de secours pour un code oublié |
