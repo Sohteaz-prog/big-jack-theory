@@ -90,10 +90,48 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.35.16**, du 30 août 2026.
+Version actuelle : **1.35.37**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.35.37 | Récapitulatif et Sessions renforcés ensemble |
+| 1.35.36 | barre déposé/retiré à la place des quatre indicateurs |
+| 1.35.35 | en-tête « Sessions » aligné sur « Récapitulatif » |
+| 1.35.34 | étiquettes du bloc résultat harmonisées |
+| 1.35.33 | titre du récapitulatif harmonisé avec les autres |
+| 1.35.32 | titre « Résultat net » agrandi |
+| 1.35.31 | saisie limitée aux chiffres, clavier numérique forcé |
+| 1.35.30 | titre du récapitulatif distingué de ses filtres |
+| 1.35.29 | résultat net agrandi et épaissi |
+| 1.35.28 | données abîmées écartées au chargement |
+| 1.35.27 | paragraphe oublié retiré du formulaire |
+| 1.35.26 | plus de confirmation demandée sur un formulaire vide |
+| 1.35.25 | fenêtre de confirmation adaptée à la saisie neuve |
+| 1.35.24 | saisie protégée : confirmation avant tout appui qui la perdrait |
+| 1.35.23 | bornes de la période affichées sous le graphique |
+| 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
+| 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
+| 1.35.37 | Récapitulatif et Sessions renforcés ensemble |
+| 1.35.36 | barre déposé/retiré à la place des quatre indicateurs |
+| 1.35.35 | en-tête « Sessions » aligné sur « Récapitulatif » |
+| 1.35.34 | étiquettes du bloc résultat harmonisées |
+| 1.35.33 | titre du récapitulatif harmonisé avec les autres |
+| 1.35.32 | titre « Résultat net » agrandi |
+| 1.35.31 | saisie limitée aux chiffres, clavier numérique forcé |
+| 1.35.30 | titre du récapitulatif distingué de ses filtres |
+| 1.35.29 | résultat net agrandi et épaissi |
+| 1.35.28 | données abîmées écartées au chargement |
+| 1.35.27 | paragraphe oublié retiré du formulaire |
+| 1.35.26 | plus de confirmation demandée sur un formulaire vide |
+| 1.35.25 | fenêtre de confirmation adaptée à la saisie neuve |
+| 1.35.24 | saisie protégée : confirmation avant tout appui qui la perdrait |
+| 1.35.23 | bornes de la période affichées sous le graphique |
+| 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
+| 1.35.21 | textes du formulaire remplacés par « (facultatif) », légende raccourcie |
+| 1.35.20 | centrage des panneaux nettement plus rapide |
+| 1.35.19 | texte de l'export adouci sur les thèmes foncés |
+| 1.35.18 | légende retirée sous le graphique en barres |
+| 1.35.17 | boutons d'action du journal en capitales |
 | 1.35.16 | texte de l'export renforcé |
 | 1.35.15 | export et import sur fond nettement plus creusé |
 | 1.35.14 | bouton d'encodage en capitales |
