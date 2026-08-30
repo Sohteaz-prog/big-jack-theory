@@ -90,12 +90,15 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.34.2**, du 30 août 2026.
+Version actuelle : **1.33.18**, du 30 août 2026.
 
 | | |
 |---|---|
-| 1.34.2 | résultat nul affiché en neutre, sans signe |
-| 1.34.1 | calculateur et progressions alignés sur « session » |
+| 1.33.18 | indicateurs du résultat net rapprochés |
+| 1.33.17 | sessions perdantes et nulles détaillées |
+| 1.33.16 | formulaire de saisie centré à l'ouverture, retour en haut à la fermeture |
+| 1.33.15 | résultat nul affiché en neutre, sans signe |
+| 1.33.14 | calculateur et progressions alignés sur « session » |
 | 1.33.13 | périodes glissantes comptées depuis aujourd'hui |
 | 1.33.12 | vocabulaire du journal uniformisé sur « session » |
 | 1.33.11 | six durées de période, en menu déroulant |
