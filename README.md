@@ -94,10 +94,11 @@ qu'une mise à jour publiée a bien remplacé l'ancienne.
   corrige ce qu'on a introduit, on revient dessus.
 - **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
 
-Version actuelle : **1.33.1**, du 30 août 2026.
+Version actuelle : **1.34**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.34 | journal : saisie repliée, séances groupées par semaine et par jour |
 | 1.33.1 | numérotation à trois niveaux |
 | 1.33 | explication des trois corrélations |
 | 1.32.8 | correction du coin bas des cartes |
