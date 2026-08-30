@@ -90,10 +90,17 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.36.19**, du 30 août 2026.
+Version actuelle : **1.38.1**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
+| 1.37.6 | icône disquette pour le bouton de sauvegarde |
+| 1.37.5 | bouton de sauvegarde dans l'en-tête, à côté de l'engrenage |
+| 1.37.4 | rappel de sauvegarde : pastille sur l'engrenage au-delà de 14 jours |
+| 1.37.3 | onglet « Systèmes » renommé et placé en tête de Théorie |
+| 1.37.2 | sous-onglets et balayage généralisés à Stratégie et Théorie |
+| 1.37.1 | bouton retour : ferme la fenêtre, le formulaire, un panneau, puis la page |
 | 1.36.19 | résultat net rappelé sous le résumé du filtre |
 | 1.36.18 | formulaire vide refermé sans confirmation quand on va ailleurs |
 | 1.36.17 | rappel glissé entre les deux onglets, barre à hauteur fixe |
@@ -130,6 +137,13 @@ Version actuelle : **1.36.19**, du 30 août 2026.
 | 1.35.23 | bornes de la période affichées sous le graphique |
 | 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
 | 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
+| 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
+| 1.37.6 | icône disquette pour le bouton de sauvegarde |
+| 1.37.5 | bouton de sauvegarde dans l'en-tête, à côté de l'engrenage |
+| 1.37.4 | rappel de sauvegarde : pastille sur l'engrenage au-delà de 14 jours |
+| 1.37.3 | onglet « Systèmes » renommé et placé en tête de Théorie |
+| 1.37.2 | sous-onglets et balayage généralisés à Stratégie et Théorie |
+| 1.37.1 | bouton retour : ferme la fenêtre, le formulaire, un panneau, puis la page |
 | 1.36.19 | résultat net rappelé sous le résumé du filtre |
 | 1.36.18 | formulaire vide refermé sans confirmation quand on va ailleurs |
 | 1.36.17 | rappel glissé entre les deux onglets, barre à hauteur fixe |
