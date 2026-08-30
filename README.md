@@ -85,20 +85,30 @@ que reconstitués de mémoire.
 
 ## Versions
 
-Le numéro s'affiche en pied de page et dans les paramètres. Il permet de vérifier
-qu'une mise à jour publiée a bien remplacé l'ancienne.
+Le numéro s'affiche en pied de page. Il s'écrit sur trois niveaux et suit l'ordre
+chronologique : le troisième nombre avance tant qu'on retouche la même partie de
+l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
+2.0.1.
 
-Le numéro s'écrit sur trois niveaux et suit l'ordre chronologique.
-
-Le troisième nombre s'incrémente tant qu'on retouche la même partie de
-l'application. Le deuxième avance dès qu'on passe à une autre partie, et le
-troisième repart à 1.
-- **2.0** — ajout majeur : nouvel écran, nouvel exercice, nouveau moteur de calcul.
-
-Version actuelle : **1.29.2**, du 30 août 2026.
+Version actuelle : **1.30.1**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.30.1 | « Big Jack » et « Theory » de même largeur sur mobile |
+| 1.29.16 | filtre « Tous » au lieu de « Les deux » |
+| 1.29.15 | filtre casinos / sites sur le tableau par lieu |
+| 1.29.14 | réglages rattachés à « Par lieu » |
+| 1.29.13 | lien de réglage masqué quand la section est repliée |
+| 1.29.12 | section des dépôts repliable, total disponible en en-tête |
+| 1.29.11 | sites triés par marge disponible, mention « épuisé » |
+| 1.29.10 | dépliage confié au chevron, le lien reste au nom |
+| 1.29.9 | détail de chaque site dépliable, heure de libération rétablie |
+| 1.29.8 | rendement en pourcentage à côté de chaque résultat net |
+| 1.29.7 | bloc des dépôts par site compacté |
+| 1.29.6 | barres du graphique tactiles, valeur lisible au toucher |
+| 1.29.5 | export et import rattachés au bloc des séances |
+| 1.29.4 | correction du regroupement par jour selon le fuseau |
+| 1.29.3 | export et import placés en fin de journal |
 | 1.29.2 | adresse de site enregistrable, nom cliquable |
 | 1.29.1 | journal : saisie repliée, séances groupées par semaine et par jour |
 | 1.28.1 | numérotation à trois niveaux |
