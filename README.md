@@ -90,10 +90,29 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.33.32**, du 30 août 2026.
+Version actuelle : **1.35.16**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.35.16 | texte de l'export renforcé |
+| 1.35.15 | export et import sur fond nettement plus creusé |
+| 1.35.14 | bouton d'encodage en capitales |
+| 1.35.13 | export et import distingués visuellement |
+| 1.35.12 | confirmation d'abandon en fenêtre centrée |
+| 1.35.11 | bouton Annuler en rouge |
+| 1.35.10 | crayon et Annuler partagent la même confirmation |
+| 1.35.8 | le crayon referme la correction, avec confirmation si besoin |
+| 1.35.7 | l'appui visé agit avant la fermeture des réglages |
+| 1.35.6 | réglages des lieux amenés à l'écran à l'ouverture |
+| 1.35.5 | réglages fermés seulement par une action, pas par un appui dans le vide |
+| 1.35.4 | panneaux dépliés amenés à l'écran |
+| 1.35.3 | réglages des lieux fermés au toucher extérieur |
+| 1.35.2 | champs de dates placés sous leur propre menu |
+| 1.35.1 | tableau par lieu conservé avec un seul lieu |
+| 1.34.1 | délai de tap retiré sur les champs et menus |
+| 1.33.35 | champ d'adresse renommé « Lien » |
+| 1.33.34 | filtre casinos ou sites dans le récapitulatif |
+| 1.33.33 | adresse enregistrable aussi pour les casinos physiques |
 | 1.33.32 | ordre des phrases retiré au sort à chaque cycle |
 | 1.33.31 | sept phrases d'intro du journal, une par jour |
 | 1.33.30 | « Encoder une session » devient un vrai bouton |
