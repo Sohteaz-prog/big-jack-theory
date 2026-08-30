@@ -90,10 +90,24 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.33.18**, du 30 août 2026.
+Version actuelle : **1.33.32**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.33.32 | ordre des phrases retiré au sort à chaque cycle |
+| 1.33.31 | sept phrases d'intro du journal, une par jour |
+| 1.33.30 | « Encoder une session » devient un vrai bouton |
+| 1.33.29 | échéances suivantes affichées dans le détail d'un site |
+| 1.33.28 | note explicative des dépôts retirée |
+| 1.33.27 | panneau de correction centré à l'ouverture |
+| 1.33.26 | note des dépôts simplifiée |
+| 1.33.25 | retour sur la session corrigée après mise à jour |
+| 1.33.24 | noms de fichiers datés en heure locale |
+| 1.33.23 | découpage du graphique en menu déroulant |
+| 1.33.22 | bornes du filtre calées sur les jours pleins |
+| 1.33.21 | liens soulignés uniformisés avec une majuscule |
+| 1.33.20 | granularité du graphique ramenée à jour, semaine, mois |
+| 1.33.19 | filtre de période aligné sur les blocs de 28 jours |
 | 1.33.18 | indicateurs du résultat net rapprochés |
 | 1.33.17 | sessions perdantes et nulles détaillées |
 | 1.33.16 | formulaire de saisie centré à l'ouverture, retour en haut à la fermeture |
