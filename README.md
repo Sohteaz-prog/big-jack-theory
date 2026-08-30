@@ -90,10 +90,29 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.35.37**, du 30 août 2026.
+Version actuelle : **1.36.19**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.36.19 | résultat net rappelé sous le résumé du filtre |
+| 1.36.18 | formulaire vide refermé sans confirmation quand on va ailleurs |
+| 1.36.17 | rappel glissé entre les deux onglets, barre à hauteur fixe |
+| 1.36.16 | menus déroulants bloqués avant de s'ouvrir sur la fenêtre |
+| 1.36.15 | compression des onglets accrue, le balayage compense |
+| 1.36.14 | onglets comprimés sur la même progression que le rappel |
+| 1.36.13 | barre des onglets recalée : le journal n'a pas de sous-navigation |
+| 1.36.12 | barre des onglets calée sous l'en-tête, elle ne disparaît plus |
+| 1.36.11 | titres Récapitulatif et Sessions retirés, les onglets suffisent |
+| 1.36.10 | rappel sorti du flux : la page ne descend plus |
+| 1.36.9 | deux onglets au lieu de trois, Général fondu dans Analyse |
+| 1.36.8 | texte du rappel affiché seulement quand la barre est assez haute |
+| 1.36.7 | l'abandon laisse la page où elle est |
+| 1.36.6 | « Continuer » ramène au formulaire repris |
+| 1.36.5 | filtre commun au-dessus des onglets, encodage dans Sessions |
+| 1.36.4 | retour de focus sans défilement après la fenêtre de confirmation |
+| 1.36.3 | changement d'onglet par balayage latéral |
+| 1.36.2 | rappel du filtre déplié progressivement au défilement |
+| 1.36.1 | trois sous-onglets dans le journal, filtre commun rappelé en barre collée |
 | 1.35.37 | Récapitulatif et Sessions renforcés ensemble |
 | 1.35.36 | barre déposé/retiré à la place des quatre indicateurs |
 | 1.35.35 | en-tête « Sessions » aligné sur « Récapitulatif » |
@@ -111,6 +130,25 @@ Version actuelle : **1.35.37**, du 30 août 2026.
 | 1.35.23 | bornes de la période affichées sous le graphique |
 | 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
 | 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
+| 1.36.19 | résultat net rappelé sous le résumé du filtre |
+| 1.36.18 | formulaire vide refermé sans confirmation quand on va ailleurs |
+| 1.36.17 | rappel glissé entre les deux onglets, barre à hauteur fixe |
+| 1.36.16 | menus déroulants bloqués avant de s'ouvrir sur la fenêtre |
+| 1.36.15 | compression des onglets accrue, le balayage compense |
+| 1.36.14 | onglets comprimés sur la même progression que le rappel |
+| 1.36.13 | barre des onglets recalée : le journal n'a pas de sous-navigation |
+| 1.36.12 | barre des onglets calée sous l'en-tête, elle ne disparaît plus |
+| 1.36.11 | titres Récapitulatif et Sessions retirés, les onglets suffisent |
+| 1.36.10 | rappel sorti du flux : la page ne descend plus |
+| 1.36.9 | deux onglets au lieu de trois, Général fondu dans Analyse |
+| 1.36.8 | texte du rappel affiché seulement quand la barre est assez haute |
+| 1.36.7 | l'abandon laisse la page où elle est |
+| 1.36.6 | « Continuer » ramène au formulaire repris |
+| 1.36.5 | filtre commun au-dessus des onglets, encodage dans Sessions |
+| 1.36.4 | retour de focus sans défilement après la fenêtre de confirmation |
+| 1.36.3 | changement d'onglet par balayage latéral |
+| 1.36.2 | rappel du filtre déplié progressivement au défilement |
+| 1.36.1 | trois sous-onglets dans le journal, filtre commun rappelé en barre collée |
 | 1.35.37 | Récapitulatif et Sessions renforcés ensemble |
 | 1.35.36 | barre déposé/retiré à la place des quatre indicateurs |
 | 1.35.35 | en-tête « Sessions » aligné sur « Récapitulatif » |
