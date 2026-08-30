@@ -90,10 +90,13 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.30.1**, du 30 août 2026.
+Version actuelle : **1.32.1**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.32.1 | vert du thème clair plus lisible |
+| 1.31.2 | pourcentage du résultat net à côté du montant |
+| 1.31.1 | détail des sites raccourci pour les écrans étroits |
 | 1.30.1 | « Big Jack » et « Theory » de même largeur sur mobile |
 | 1.29.16 | filtre « Tous » au lieu de « Les deux » |
 | 1.29.15 | filtre casinos / sites sur le tableau par lieu |
