@@ -90,10 +90,13 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.32.1**, du 30 août 2026.
+Version actuelle : **1.33.3**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.33.3 | seule la première libération est affichée |
+| 1.33.2 | prochaine libération annoncée en délai sur la ligne du site |
+| 1.33.1 | libérations groupées par échéance, calcul suivant l'horloge |
 | 1.32.1 | vert du thème clair plus lisible |
 | 1.31.2 | pourcentage du résultat net à côté du montant |
 | 1.31.1 | détail des sites raccourci pour les écrans étroits |
