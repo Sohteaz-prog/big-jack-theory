@@ -90,10 +90,21 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.33.4**, du 30 août 2026.
+Version actuelle : **1.34.2**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.34.2 | résultat nul affiché en neutre, sans signe |
+| 1.34.1 | calculateur et progressions alignés sur « session » |
+| 1.33.13 | périodes glissantes comptées depuis aujourd'hui |
+| 1.33.12 | vocabulaire du journal uniformisé sur « session » |
+| 1.33.11 | six durées de période, en menu déroulant |
+| 1.33.10 | détail dépliable pour chaque lieu |
+| 1.33.9 | indicateurs du résultat net en deux rangées de deux |
+| 1.33.8 | période de six mois ajoutée au graphique |
+| 1.33.7 | périodes de 28 jours au lieu de mois calendaires |
+| 1.33.6 | résultat net et pourcentage sur une seule ligne |
+| 1.33.5 | mise seule correctement libellée dans la liste des séances |
 | 1.33.4 | à marge égale, tri par libération la plus proche |
 | 1.33.3 | seule la première libération est affichée |
 | 1.33.2 | prochaine libération annoncée en délai sur la ligne du site |
