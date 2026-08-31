@@ -90,10 +90,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.19**, du 31 août 2026.
+Version actuelle : **1.42.20**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.42.20 | retour matériel : tampon de deux jalons, plus de sortie brutale |
 | 1.42.19 | retour matériel : jalons posés une seule fois, sortie fiable |
 | 1.42.18 | plafond de dépôt : la valeur prend la couleur de sa barre |
 | 1.42.17 | le retour repasse par l'onglet précédent du journal |
