@@ -95,10 +95,12 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.43.27**, du 31 août 2026.
+Version actuelle : **1.43.29**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.43.29 | plantage du tableau des mains corrigé, suite de tests ajoutée |
+| 1.43.28 | une vue secondaire rend la main à sa page mère |
 | 1.43.27 | correction : les paramètres étaient rendus dans la zone masquée |
 | 1.43.26 | mention de conception assistée par IA générative |
 | 1.43.25 | colonne des négatifs inversée |

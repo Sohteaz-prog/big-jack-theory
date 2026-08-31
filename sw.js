@@ -4,7 +4,7 @@
 // fixes. Une mise à jour déposée sur l'hébergeur est donc prise en compte au
 // lancement suivant si le téléphone est connecté, et l'application reste
 // utilisable hors ligne dans tous les cas.
-const CACHE = "big-jack-theory-1.43.27";
+const CACHE = "big-jack-theory-1.43.29";
 const FICHIERS = [
   "./",
   "./index.html",
