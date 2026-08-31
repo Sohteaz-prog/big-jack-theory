@@ -90,10 +90,12 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.14**, du 31 août 2026.
+Version actuelle : **1.42.16**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.42.16 | le retour suit l'historique des pages consultées |
+| 1.42.15 | retour graduel des exercices, confirmation seulement si engagé |
 | 1.42.14 | logo en ligne sur l'accueil, suivant l'enseigne choisie |
 | 1.42.13 | logo en tête de la page d'accueil |
 | 1.42.12 | espacement des titres uniformisé sur toutes les pages |
