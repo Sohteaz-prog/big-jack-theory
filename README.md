@@ -90,10 +90,64 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.38.10**, du 30 août 2026.
+Version actuelle : **1.40.2**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.39.30 | paramètres : un seul panneau déplié, tout se ferme en quittant |
+| 1.40.2 | titres des exercices un cran sous ceux des pages |
+| 1.40.1 | exercices : remontée au choix, exercice conservé au rafraîchissement |
+| 1.39.51 | fond des sections adouci, distinction portée par le bord |
+| 1.39.50 | textes de la section Limites de jeu allégés de moitié |
+| 1.39.49 | sections distinguées par le fond plutôt que par un filet |
+| 1.39.48 | section Comptage compactée en deux colonnes |
+| 1.39.47 | cadres fixes distingués des sections repliables |
+| 1.39.46 | titres des cadres non repliables harmonisés |
+| 1.39.45 | aides du jeu de sons et du tic mises à la même longueur |
+| 1.39.44 | phrase d'introduction des paramètres remise à jour |
+| 1.39.43 | enseigne en minuscule dans le résumé de section |
+| 1.39.42 | section « Apparence et sons » renommée « Thème et sons » |
+| 1.39.41 | résumé de la section aligné sur le libellé du menu |
+| 1.39.40 | tous les titres de page à la même taille |
+| 1.39.39 | « Suivre le système » raccourci en « Système » |
+| 1.39.38 | deux colonnes aussi sur téléphone dans Apparence et sons |
+| 1.39.37 | titre « Choix de la table » aligné sur les titres de section |
+| 1.39.36 | jeu de sons et tic toujours visibles |
+| 1.39.35 | phrase obsolète retirée de la gestion des tables |
+| 1.39.34 | Théorie avant Journal dans la barre de navigation |
+| 1.39.33 | contour doré des sections ouvertes retiré |
+| 1.39.32 | aide du jeu de sons limitée au choix actif |
+| 1.39.31 | « Apparence et sons » compactée en deux colonnes |
+| 1.39.29 | paramètres : sections centrées à l'ouverture, gestion refermée au clic ailleurs |
+| 1.39.28 | phrase d'introduction du choix de table retirée |
+| 1.39.27 | lien « Détails » déplacé sur la ligne du choix de la table |
+| 1.39.26 | « Vos mises » migré des règles de table vers les limites de jeu |
+| 1.39.25 | supprimer la table active ramène à la première préenregistrée |
+| 1.39.24 | mélangeur inconnu : libellé aligné sur la carte de coupe |
+| 1.39.23 | section des règles remplacée par une fenêtre de détails |
+| 1.39.22 | bloc de gestion redondant retiré des paramètres |
+| 1.39.21 | mélange clarifié, carte de coupe masquée sur mélangeur continu |
+| 1.39.20 | « Ajouter une table » devient « Créer une table » |
+| 1.39.19 | numérotation des tables par ordre de création |
+| 1.39.18 | « Mises de la table » renommé « Vos mises » |
+| 1.39.17 | nom par défaut « Table 1, 2, 3… » si aucun n'est saisi |
+| 1.39.16 | nouvelle table : partir d'une table préenregistrée comme modèle |
+| 1.39.15 | « Points de départ » renommé « Tables préenregistrées » |
+| 1.39.14 | lignes de tables sur le modèle des sessions : crayon et croix |
+| 1.39.13 | « Table inconnue » retirée, tables perso sous les profils |
+| 1.39.12 | tables créées et modifiées dans une fenêtre, sur un brouillon |
+| 1.39.11 | tables et lieux inclus dans la sauvegarde et la réinitialisation |
+| 1.39.10 | « Gérer mes tables » en lien discret, comme « Régler les lieux » |
+| 1.39.9 | panneau « Gérer mes tables » : renommer, modifier, supprimer |
+| 1.39.8 | phrase d'introduction des paramètres raccourcie |
+| 1.39.7 | « Enregistrer cette table » placé en pied de la section des règles |
+| 1.39.6 | libellés des tables personnalisées précisés |
+| 1.39.5 | descriptions des réglages raccourcies |
+| 1.39.4 | paramètres : ouverture en haut, profils renommés, confirmation centrée |
+| 1.39.3 | typographie des onglets uniformisée sur les trois pages |
+| 1.39.2 | marge basse du gabarit retirée des bandes d'onglets |
+| 1.39.1 | bandes d'onglets de Stratégie et Théorie affinées à 28 px |
+| 1.38.19 | la croix referme bien une correction sans modification |
 | 1.38.18 | fermeture des paramètres à 90 ms |
 | 1.38.17 | ouverture et fermeture des paramètres accélérées |
 | 1.38.16 | les paramètres remontent en se fermant |
@@ -153,65 +207,6 @@ Version actuelle : **1.38.10**, du 30 août 2026.
 | 1.35.23 | bornes de la période affichées sous le graphique |
 | 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
 | 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
-| 1.38.18 | fermeture des paramètres à 90 ms |
-| 1.38.17 | ouverture et fermeture des paramètres accélérées |
-| 1.38.16 | les paramètres remontent en se fermant |
-| 1.38.15 | les paramètres ne referment plus le formulaire d'encodage |
-| 1.38.14 | remontée avant le rendu : plus aucun mouvement au changement d'onglet |
-| 1.38.13 | les paramètres descendent par-dessus la page |
-| 1.38.12 | les paramètres se superposent au journal sans le réinitialiser |
-| 1.38.10 | les panneaux se referment au changement d'onglet |
-| 1.38.9 | changement d'onglet : saut direct en haut, sans animation |
-| 1.38.8 | panneaux exclusifs, repli sans saut, « Limites de dépôt » |
-| 1.38.7 | signe + retiré des lignes de site |
-| 1.38.6 | ligne de site entièrement cliquable, lien en bouton dans le détail |
-| 1.38.5 | filtre sur une seule ligne, y compris sur téléphone |
-| 1.38.4 | le balayage remonte en haut, comme les boutons d'onglet |
-| 1.38.3 | plus de saut quand un panneau s'ouvre pendant que les réglages se referment |
-| 1.38.2 | huit corrections du journal : dépôts, onglets, rappel, ancrage, lien, montant |
-| 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
-| 1.37.6 | icône disquette pour le bouton de sauvegarde |
-| 1.37.5 | bouton de sauvegarde dans l'en-tête, à côté de l'engrenage |
-| 1.37.4 | rappel de sauvegarde : pastille sur l'engrenage au-delà de 14 jours |
-| 1.37.3 | onglet « Systèmes » renommé et placé en tête de Théorie |
-| 1.37.2 | sous-onglets et balayage généralisés à Stratégie et Théorie |
-| 1.37.1 | bouton retour : ferme la fenêtre, le formulaire, un panneau, puis la page |
-| 1.36.19 | résultat net rappelé sous le résumé du filtre |
-| 1.36.18 | formulaire vide refermé sans confirmation quand on va ailleurs |
-| 1.36.17 | rappel glissé entre les deux onglets, barre à hauteur fixe |
-| 1.36.16 | menus déroulants bloqués avant de s'ouvrir sur la fenêtre |
-| 1.36.15 | compression des onglets accrue, le balayage compense |
-| 1.36.14 | onglets comprimés sur la même progression que le rappel |
-| 1.36.13 | barre des onglets recalée : le journal n'a pas de sous-navigation |
-| 1.36.12 | barre des onglets calée sous l'en-tête, elle ne disparaît plus |
-| 1.36.11 | titres Récapitulatif et Sessions retirés, les onglets suffisent |
-| 1.36.10 | rappel sorti du flux : la page ne descend plus |
-| 1.36.9 | deux onglets au lieu de trois, Général fondu dans Analyse |
-| 1.36.8 | texte du rappel affiché seulement quand la barre est assez haute |
-| 1.36.7 | l'abandon laisse la page où elle est |
-| 1.36.6 | « Continuer » ramène au formulaire repris |
-| 1.36.5 | filtre commun au-dessus des onglets, encodage dans Sessions |
-| 1.36.4 | retour de focus sans défilement après la fenêtre de confirmation |
-| 1.36.3 | changement d'onglet par balayage latéral |
-| 1.36.2 | rappel du filtre déplié progressivement au défilement |
-| 1.36.1 | trois sous-onglets dans le journal, filtre commun rappelé en barre collée |
-| 1.35.37 | Récapitulatif et Sessions renforcés ensemble |
-| 1.35.36 | barre déposé/retiré à la place des quatre indicateurs |
-| 1.35.35 | en-tête « Sessions » aligné sur « Récapitulatif » |
-| 1.35.34 | étiquettes du bloc résultat harmonisées |
-| 1.35.33 | titre du récapitulatif harmonisé avec les autres |
-| 1.35.32 | titre « Résultat net » agrandi |
-| 1.35.31 | saisie limitée aux chiffres, clavier numérique forcé |
-| 1.35.30 | titre du récapitulatif distingué de ses filtres |
-| 1.35.29 | résultat net agrandi et épaissi |
-| 1.35.28 | données abîmées écartées au chargement |
-| 1.35.27 | paragraphe oublié retiré du formulaire |
-| 1.35.26 | plus de confirmation demandée sur un formulaire vide |
-| 1.35.25 | fenêtre de confirmation adaptée à la saisie neuve |
-| 1.35.24 | saisie protégée : confirmation avant tout appui qui la perdrait |
-| 1.35.23 | bornes de la période affichées sous le graphique |
-| 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
-| 1.35.21 | textes du formulaire remplacés par « (facultatif) », légende raccourcie |
 | 1.35.20 | centrage des panneaux nettement plus rapide |
 | 1.35.19 | texte de l'export adouci sur les thèmes foncés |
 | 1.35.18 | légende retirée sous le graphique en barres |
