@@ -90,10 +90,17 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.7**, du 31 août 2026.
+Version actuelle : **1.42.14**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.42.14 | logo en ligne sur l'accueil, suivant l'enseigne choisie |
+| 1.42.13 | logo en tête de la page d'accueil |
+| 1.42.12 | espacement des titres uniformisé sur toutes les pages |
+| 1.42.11 | page d'accueil alignée sur la nouvelle structure |
+| 1.42.10 | retour depuis un exercice : confirmation puis menu, en haut |
+| 1.42.9 | retour matériel : confirmation avant de quitter un exercice |
+| 1.42.8 | retour Android depuis une fiche : passe par la liste des systèmes |
 | 1.42.7 | fiche et retour : remontée en haut sans mouvement parasite |
 | 1.42.6 | onglet Fiche retiré : elle s'ouvre depuis la liste des systèmes |
 | 1.42.5 | systèmes : détail centré et refermable, position retrouvée au retour |
