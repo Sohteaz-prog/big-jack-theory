@@ -90,10 +90,21 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.43.13**, du 31 août 2026.
+Version actuelle : **1.43.24**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.43.24 | le compte du sabot expire au bout de dix minutes |
+| 1.43.23 | réouverture sur le compteur limitée à dix minutes |
+| 1.43.22 | clavier : ordre négatif-neutre-positif, colonnes de même hauteur |
+| 1.43.21 | clavier du compteur en colonnes plutôt qu'en rangées |
+| 1.43.20 | barre des sous-onglets mesurée au lieu d'être estimée |
+| 1.43.19 | étiquettes du compteur et du journal harmonisées |
+| 1.43.18 | cadre du compteur jointif à la barre des sous-onglets |
+| 1.43.17 | cadre du compteur placé sous la barre des sous-onglets |
+| 1.43.16 | en-têtes de tableau harmonisés |
+| 1.43.15 | pourcentage de pénétration rétabli auprès de sa jauge |
+| 1.43.14 | compteur allégé : pénétration hors du cadre, barème replié |
 | 1.43.13 | texte du tableau des mains déplacé dans une fenêtre |
 | 1.43.12 | cadre du compteur compacté, pénétration repliable |
 | 1.43.11 | la liste des systèmes garde sa place au changement de système |
