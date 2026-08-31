@@ -90,11 +90,13 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.40.13**, du 31 août 2026.
+Version actuelle : **1.40.15**, du 31 août 2026.
 
 | | |
 |---|---|
 | 1.39.30 | paramètres : un seul panneau déplié, tout se ferme en quittant |
+| 1.40.15 | lancement accéléré, jeton correct en thème sombre |
+| 1.40.14 | page icones.html pour changer l'icône sans réinstaller |
 | 1.40.13 | écran de lancement avec le jeton et le nom courbé |
 | 1.40.12 | « The » ajouté au titre de l'en-tête, à l'essai |
 | 1.40.11 | historique filtrable par exercice, le défilé y figure enfin |
