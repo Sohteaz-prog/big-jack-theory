@@ -6,6 +6,11 @@ compteur de cartes, exercices chronométrés et journal de sessions.
 Tout fonctionne hors ligne. Aucune donnée n'est transmise : réglages, journal et
 progression restent dans le navigateur de l'appareil.
 
+Cette application a été conçue et développée avec l'aide d'une intelligence
+artificielle générative. Les tableaux de stratégie et les indicateurs chiffrés
+proviennent de sources publiées, citées dans la section Lectures ; vérifiez-y ce
+qui vous engage.
+
 ## Ce que contient l'application
 
 **Stratégie** — Le tableau des mains dures, souples et paires, avec l'espérance
@@ -90,10 +95,12 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.43.25**, du 31 août 2026.
+Version actuelle : **1.43.27**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.43.27 | correction : les paramètres étaient rendus dans la zone masquée |
+| 1.43.26 | mention de conception assistée par IA générative |
 | 1.43.25 | colonne des négatifs inversée |
 | 1.43.24 | le compte du sabot expire au bout de dix minutes |
 | 1.43.23 | réouverture sur le compteur limitée à dix minutes |
