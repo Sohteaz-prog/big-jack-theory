@@ -90,11 +90,19 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.40.2**, du 31 août 2026.
+Version actuelle : **1.40.11**, du 31 août 2026.
 
 | | |
 |---|---|
 | 1.39.30 | paramètres : un seul panneau déplié, tout se ferme en quittant |
+| 1.40.11 | historique filtrable par exercice, le défilé y figure enfin |
+| 1.40.10 | séries et profil réunis dans « Votre progression » |
+| 1.40.9 | quitter un exercice demande confirmation et ramène au menu |
+| 1.40.8 | Commencer centré, repli en cartouche, exercice conservé au changement de page |
+| 1.40.7 | code mort retiré après harmonisation des exercices |
+| 1.40.6 | les cinq accueils d'exercice harmonisés, réglages compacts |
+| 1.40.4 | accueil commun aux exercices, appliqué à Valeur de carte |
+| 1.40.3 | « Prêt pour la table » aligné sur le résultat net du journal |
 | 1.40.2 | titres des exercices un cran sous ceux des pages |
 | 1.40.1 | exercices : remontée au choix, exercice conservé au rafraîchissement |
 | 1.39.51 | fond des sections adouci, distinction portée par le bord |
