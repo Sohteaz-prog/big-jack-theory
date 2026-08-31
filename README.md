@@ -90,10 +90,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.38.1**, du 30 août 2026.
+Version actuelle : **1.38.2**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.38.2 | huit corrections du journal : dépôts, onglets, rappel, ancrage, lien, montant |
 | 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
 | 1.37.6 | icône disquette pour le bouton de sauvegarde |
 | 1.37.5 | bouton de sauvegarde dans l'en-tête, à côté de l'engrenage |
@@ -137,6 +138,7 @@ Version actuelle : **1.38.1**, du 30 août 2026.
 | 1.35.23 | bornes de la période affichées sous le graphique |
 | 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
 | 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
+| 1.38.2 | huit corrections du journal : dépôts, onglets, rappel, ancrage, lien, montant |
 | 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
 | 1.37.6 | icône disquette pour le bouton de sauvegarde |
 | 1.37.5 | bouton de sauvegarde dans l'en-tête, à côté de l'engrenage |
