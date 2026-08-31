@@ -90,10 +90,18 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.29**, du 31 août 2026.
+Version actuelle : **1.43.7**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.43.7 | termes anglais des croupiers dans le lexique |
+| 1.43.6 | téléchargement factorisé, relevé provisoire et vestiges retirés |
+| 1.43.5 | les paramètres ne démontent plus la page qu'ils recouvrent |
+| 1.43.4 | sept termes ajoutés au lexique |
+| 1.43.3 | choix du système accessible depuis l'onglet Systèmes |
+| 1.43.2 | lexique : un terme à la fois, centré, refermé au clic ailleurs |
+| 1.43.1 | chemin raccourci : un onglet, une page, puis l'accueil |
+| 1.42.30 | passer par l'accueil efface le chemin, sortie en deux appuis |
 | 1.42.29 | le chemin parcouru survit au rafraîchissement |
 | 1.42.28 | relancement sur l'accueil, réserve reconstituée avant la sortie |
 | 1.42.27 | les paramètres sortent de la hiérarchie du retour |
