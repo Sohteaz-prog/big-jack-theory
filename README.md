@@ -90,10 +90,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.27**, du 31 août 2026.
+Version actuelle : **1.42.28**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.42.28 | relancement sur l'accueil, réserve reconstituée avant la sortie |
 | 1.42.27 | les paramètres sortent de la hiérarchie du retour |
 | 1.42.26 | un jalon d'historique par navigation, aucun pendant le retour |
 | 1.42.25 | logo et cartes de l'accueil remontent aussi en haut |
