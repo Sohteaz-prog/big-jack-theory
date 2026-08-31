@@ -90,10 +90,14 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.23**, du 31 août 2026.
+Version actuelle : **1.42.27**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.42.27 | les paramètres sortent de la hiérarchie du retour |
+| 1.42.26 | un jalon d'historique par navigation, aucun pendant le retour |
+| 1.42.25 | logo et cartes de l'accueil remontent aussi en haut |
+| 1.42.24 | jalon reposé aussitôt, tampon de trois, relevé du retour |
 | 1.42.23 | changer de système remonte en haut de page |
 | 1.42.22 | renvois des exercices en haut de page, repli centré |
 | 1.42.21 | l'accueil devient la racine : le retour y amorce la sortie |
