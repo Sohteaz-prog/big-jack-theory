@@ -90,10 +90,15 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.38.2**, du 30 août 2026.
+Version actuelle : **1.38.7**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.38.7 | signe + retiré des lignes de site |
+| 1.38.6 | ligne de site entièrement cliquable, lien en bouton dans le détail |
+| 1.38.5 | filtre sur une seule ligne, y compris sur téléphone |
+| 1.38.4 | le balayage remonte en haut, comme les boutons d'onglet |
+| 1.38.3 | plus de saut quand un panneau s'ouvre pendant que les réglages se referment |
 | 1.38.2 | huit corrections du journal : dépôts, onglets, rappel, ancrage, lien, montant |
 | 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
 | 1.37.6 | icône disquette pour le bouton de sauvegarde |
@@ -138,6 +143,11 @@ Version actuelle : **1.38.2**, du 30 août 2026.
 | 1.35.23 | bornes de la période affichées sous le graphique |
 | 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
 | 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
+| 1.38.7 | signe + retiré des lignes de site |
+| 1.38.6 | ligne de site entièrement cliquable, lien en bouton dans le détail |
+| 1.38.5 | filtre sur une seule ligne, y compris sur téléphone |
+| 1.38.4 | le balayage remonte en haut, comme les boutons d'onglet |
+| 1.38.3 | plus de saut quand un panneau s'ouvre pendant que les réglages se referment |
 | 1.38.2 | huit corrections du journal : dépôts, onglets, rappel, ancrage, lien, montant |
 | 1.38.1 | logo en jeton de casino, enseignes des cartes redevenues aléatoires |
 | 1.37.6 | icône disquette pour le bouton de sauvegarde |
