@@ -90,10 +90,20 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.38.7**, du 30 août 2026.
+Version actuelle : **1.38.10**, du 30 août 2026.
 
 | | |
 |---|---|
+| 1.38.18 | fermeture des paramètres à 90 ms |
+| 1.38.17 | ouverture et fermeture des paramètres accélérées |
+| 1.38.16 | les paramètres remontent en se fermant |
+| 1.38.15 | les paramètres ne referment plus le formulaire d'encodage |
+| 1.38.14 | remontée avant le rendu : plus aucun mouvement au changement d'onglet |
+| 1.38.13 | les paramètres descendent par-dessus la page |
+| 1.38.12 | les paramètres se superposent au journal sans le réinitialiser |
+| 1.38.10 | les panneaux se referment au changement d'onglet |
+| 1.38.9 | changement d'onglet : saut direct en haut, sans animation |
+| 1.38.8 | panneaux exclusifs, repli sans saut, « Limites de dépôt » |
 | 1.38.7 | signe + retiré des lignes de site |
 | 1.38.6 | ligne de site entièrement cliquable, lien en bouton dans le détail |
 | 1.38.5 | filtre sur une seule ligne, y compris sur téléphone |
@@ -143,6 +153,16 @@ Version actuelle : **1.38.7**, du 30 août 2026.
 | 1.35.23 | bornes de la période affichées sous le graphique |
 | 1.35.22 | note et contrôle automatique sur les deux copies du formulaire |
 | 1.35.21 | textes explicatifs remplacés par « (facultatif) » |
+| 1.38.18 | fermeture des paramètres à 90 ms |
+| 1.38.17 | ouverture et fermeture des paramètres accélérées |
+| 1.38.16 | les paramètres remontent en se fermant |
+| 1.38.15 | les paramètres ne referment plus le formulaire d'encodage |
+| 1.38.14 | remontée avant le rendu : plus aucun mouvement au changement d'onglet |
+| 1.38.13 | les paramètres descendent par-dessus la page |
+| 1.38.12 | les paramètres se superposent au journal sans le réinitialiser |
+| 1.38.10 | les panneaux se referment au changement d'onglet |
+| 1.38.9 | changement d'onglet : saut direct en haut, sans animation |
+| 1.38.8 | panneaux exclusifs, repli sans saut, « Limites de dépôt » |
 | 1.38.7 | signe + retiré des lignes de site |
 | 1.38.6 | ligne de site entièrement cliquable, lien en bouton dans le détail |
 | 1.38.5 | filtre sur une seule ligne, y compris sur téléphone |
