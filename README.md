@@ -90,10 +90,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.43.24**, du 31 août 2026.
+Version actuelle : **1.43.25**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.43.25 | colonne des négatifs inversée |
 | 1.43.24 | le compte du sabot expire au bout de dix minutes |
 | 1.43.23 | réouverture sur le compteur limitée à dix minutes |
 | 1.43.22 | clavier : ordre négatif-neutre-positif, colonnes de même hauteur |
