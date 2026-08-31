@@ -90,11 +90,14 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.42.3**, du 31 août 2026.
+Version actuelle : **1.42.7**, du 31 août 2026.
 
 | | |
 |---|---|
-| 1.39.30 | paramètres : un seul panneau déplié, tout se ferme en quittant |
+| 1.42.7 | fiche et retour : remontée en haut sans mouvement parasite |
+| 1.42.6 | onglet Fiche retiré : elle s'ouvre depuis la liste des systèmes |
+| 1.42.5 | systèmes : détail centré et refermable, position retrouvée au retour |
+| 1.42.4 | barre basse : colonnes ajustées au nombre d'onglets |
 | 1.42.3 | mouvements parasites au focus et au changement de tableau |
 | 1.42.2 | renvois croisés vérifiés après réorganisation |
 | 1.42.1 | pages réorganisées par moment d'usage |
@@ -138,6 +141,7 @@ Version actuelle : **1.42.3**, du 31 août 2026.
 | 1.39.33 | contour doré des sections ouvertes retiré |
 | 1.39.32 | aide du jeu de sons limitée au choix actif |
 | 1.39.31 | « Apparence et sons » compactée en deux colonnes |
+| 1.39.30 | paramètres : un seul panneau déplié, tout se ferme en quittant |
 | 1.39.29 | paramètres : sections centrées à l'ouverture, gestion refermée au clic ailleurs |
 | 1.39.28 | phrase d'introduction du choix de table retirée |
 | 1.39.27 | lien « Détails » déplacé sur la ligne du choix de la table |
