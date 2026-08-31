@@ -90,10 +90,16 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.43.7**, du 31 août 2026.
+Version actuelle : **1.43.13**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.43.13 | texte du tableau des mains déplacé dans une fenêtre |
+| 1.43.12 | cadre du compteur compacté, pénétration repliable |
+| 1.43.11 | la liste des systèmes garde sa place au changement de système |
+| 1.43.10 | changement de système : remontée répétée après le menu natif |
+| 1.43.9 | retour au menu des exercices à la hauteur quittée |
+| 1.43.8 | le retour depuis une fiche suit le chemin, plus la liste |
 | 1.43.7 | termes anglais des croupiers dans le lexique |
 | 1.43.6 | téléchargement factorisé, relevé provisoire et vestiges retirés |
 | 1.43.5 | les paramètres ne démontent plus la page qu'ils recouvrent |
