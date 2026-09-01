@@ -102,10 +102,12 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.45.1**, du 31 août 2026.
+Version actuelle : **1.45.3**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.45.3 | titre des mains souples raccourci |
+| 1.45.2 | la recherche entoure à nouveau la case trouvée |
 | 1.45.1 | les onglets du journal deviennent des vues à part entière |
 | 1.44.17 | découpage achevé : quatorze modules dans src/ |
 | 1.44.16 | données et moteur de stratégie sortis en modules |
