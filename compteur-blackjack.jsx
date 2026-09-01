@@ -4075,8 +4075,10 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
 
 function Grille({ titre, lignes, mobile, onCellule, selection }) {
   const largeurLabel = mobile ? 46 : 76;
+  /* 26 px sous le sélecteur laissaient un trou : la ligne de titre appartient
+     visuellement au tableau, elle doit le suivre de près. */
   return (
-    <div style={{ marginTop: 26 }}>
+    <div style={{ marginTop: 12 }}>
       <div style={{ ...S.eyebrow, borderTop: "1px solid var(--encre)", paddingTop: 10, marginBottom: 10 }}>{titre}</div>
 
         {/* Même style d'en-tête que les autres tableaux de l'application. */}
@@ -4194,6 +4196,32 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
      tableaux et s'arrête là — il ne remonte pas à la page. Ailleurs sur
      l'écran, c'est le balayage de page qui joue et l'on passe au compteur. */
   const zoneTableaux = useRef(null);
+  const choixTableau = useRef(null);
+
+  /* Le sélecteur vient toujours se poser au même endroit, juste sous les barres
+     collées. On ancre sur LUI et non sur le tableau : les trois n'ont pas la
+     même hauteur, et viser le tableau déplaçait la barre à chaque changement. */
+  /* Amène la grille juste sous les barres collées — bandeau compris, puisqu'il
+     porte data-colle et que hautCollé() le mesure une fois peint. */
+  const calerTableau = () => {
+    const poser = () => {
+      const el = zoneTableaux.current;
+      if (!el) return;
+      const y = window.scrollY + el.getBoundingClientRect().top - hautCollé() - 6;
+      window.scrollTo(0, Math.max(0, y));
+    };
+    requestAnimationFrame(() => requestAnimationFrame(poser));
+  };
+
+  const caler = () => {
+    const poser = () => {
+      const el = choixTableau.current;
+      if (!el) return;
+      const y = window.scrollY + el.getBoundingClientRect().top - hautCollé() - 8;
+      window.scrollTo(0, Math.max(0, y));
+    };
+    requestAnimationFrame(poser);
+  };
   const balayageBrut = useBalayage(
     [{ v: "dur" }, { v: "mou" }, { v: "paires" }],
     tableauVu,
@@ -4209,9 +4237,8 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
       e.stopPropagation();
       const avant = tableauVu;
       balayageBrut.onTouchEnd(e);
-      /* Si le geste a changé de tableau, on le ramène sous les barres. */
       requestAnimationFrame(() => {
-        if (tableauVu !== avant) amener(zoneTableaux.current);
+        if (tableauVu !== avant) caler();
       });
     },
   };
@@ -4288,6 +4315,9 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
     const r = chercher(texte);
     if (!r) { setErreurRecherche(texte.trim().length > 1); return; }
     setErreurRecherche(false);
+    /* On remonte en haut : le bandeau de résultat se pose sous les barres
+       collées, et rien ne le coupe. */
+    window.scrollTo(0, 0);
     /* La main trouvée peut être dans un autre tableau que celui affiché. */
     setTableauVu(r.cible.split("-")[0]);
     /* La grille repère ses cases par « main|hauteur ». La recherche produisait
@@ -4299,6 +4329,11 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
   const choisir = (cible, main, hauteur, code, cartesExactes, titre) => {
     setSelection(cible);
     if (!cible) { setDetail(null); return; }
+    /* Le bandeau qui va s'ouvrir est collé en haut et mange de la hauteur :
+       on descend le tableau juste dessous, quitte à masquer ce qui le
+       précède. Perdre les réglages n'a pas d'importance ; perdre trois
+       rangées de décisions, si. */
+    calerTableau();
     const cartes = cartesExactes ?? MAINS[main];
     const h = hauteur === "A" ? 1 : Number(hauteur);
     const stats = cartes ? analyserMain(cartes, h, h17, paquets, sansCarteCachee) : null;
@@ -4510,6 +4545,16 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
             fontFamily: "inherit",
           }}
         />
+        {/* Chaque bouton « A » suit le champ qu'il remplit : les deux du même
+            côté ne disaient pas lequel ils visaient. */}
+        <button
+          onClick={() => { const v = maMain + "A"; setMaMain(v); lancerRecherche(v, croupier); }}
+          aria-label="As dans ma main"
+          title="As dans ma main"
+          style={S.asRecherche}
+        >
+          A
+        </button>
         <input
           value={croupier}
           onChange={(e) => { setCroupier(e.target.value); lancerRecherche(maMain, e.target.value); }}
@@ -4530,16 +4575,6 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
             fontFamily: "inherit",
           }}
         />
-        {/* L'as ne figure pas sur un clavier numérique : deux boutons carrés
-            le posent dans l'un ou l'autre champ, sans prendre de rangée. */}
-        <button
-          onClick={() => { const v = maMain + "A"; setMaMain(v); lancerRecherche(v, croupier); }}
-          aria-label="As dans ma main"
-          title="As dans ma main"
-          style={{ ...S.asRecherche, marginLeft: -4 }}
-        >
-          A
-        </button>
         <button
           onClick={() => { setCroupier("A"); lancerRecherche(maMain, "A"); }}
           aria-label="As au croupier"
@@ -4649,7 +4684,7 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
 
       {/* Un seul tableau à la fois : les trois empilés faisaient une page très
           longue, où l'on perdait la ligne d'en-tête en défilant. */}
-      <div style={{ marginTop: 18 }}>
+      <div ref={choixTableau} style={{ marginTop: 18 }}>
         <Segments
           plein
           options={[
@@ -4659,11 +4694,8 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
           ]}
           valeur={tableauVu}
           onChange={(v) => {
-            /* Le nouveau tableau vient se placer sous les barres collées, au
-               lieu de renvoyer en haut de la page : on compare trois grilles,
-               on ne change pas d'écran. */
             setTableauVu(v);
-            amener(zoneTableaux.current);
+            caler();
           }}
         />
       </div>

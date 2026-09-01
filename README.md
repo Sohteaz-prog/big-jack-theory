@@ -102,10 +102,12 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.45.18**, du 31 août 2026.
+Version actuelle : **1.45.20**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.45.20 | le tableau reste entier quand le bandeau s'ouvre |
+| 1.45.19 | tableau des mains : calage stable, recherche réordonnée |
 | 1.45.18 | aide au choix repliée en haut des systèmes |
 | 1.45.17 | sous-titres des systèmes débarrassés de leurs doublons |
 | 1.45.16 | tri par niveau ajouté, ordre du menu corrigé |
