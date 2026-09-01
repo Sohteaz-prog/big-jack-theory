@@ -11,6 +11,13 @@ artificielle générative. Les tableaux de stratégie et les indicateurs chiffr�
 proviennent de sources publiées, citées dans la section Lectures ; vérifiez-y ce
 qui vous engage.
 
+## Tests
+
+Une suite de tests vit dans `tests/`. Elle lit le fichier compilé et vérifie
+la navigation, le bouton retour, l'exactitude du tableau de stratégie et
+l'apparence issue de la refonte. Lancez `node tests.mjs` après chaque
+recompilation ; le LISEZMOI du dossier explique ce qu'elle couvre.
+
 ## Ce que contient l'application
 
 **Stratégie** — Le tableau des mains dures, souples et paires, avec l'espérance
@@ -95,10 +102,28 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.43.29**, du 31 août 2026.
+Version actuelle : **1.45.1**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.45.1 | les onglets du journal deviennent des vues à part entière |
+| 1.44.17 | découpage achevé : quatorze modules dans src/ |
+| 1.44.16 | données et moteur de stratégie sortis en modules |
+| 1.44.15 | correction : la police serif n'était pas chargée |
+| 1.44.14 | indicateurs en jauges nommées, page « Systèmes de comptage » |
+| 1.44.13 | jauge de pénétration alignée sur celles des exercices |
+| 1.44.12 | compte courant coloré, étiquette retirée |
+| 1.44.11 | légende du tableau adaptée aux décisions présentes |
+| 1.44.10 | lettre colorée sur fond atténué à 18 % |
+| 1.44.9 | le résultat net retrouve sa couleur, cartouche conservé |
+| 1.44.8 | lettres du tableau en encre pleine, titre raccourci |
+| 1.44.7 | courbe cumulée : aire, ligne de zéro, plus bas annoté |
+| 1.44.6 | prêt pour la table : jauges d'avancement avec cran de cible |
+| 1.44.5 | titres en Source Serif 4, à l'essai |
+| 1.44.4 | barème sur dix cartes dans la liste des systèmes |
+| 1.44.3 | règle des afficheurs : chiffre en encre pleine, état en cartouche |
+| 1.44.2 | accueil : sous-titre et métadonnées des cartes |
+| 1.44.1 | tableau des mains : teintes renforcées, légende, lettre plus lisible |
 | 1.43.29 | plantage du tableau des mains corrigé, suite de tests ajoutée |
 | 1.43.28 | une vue secondaire rend la main à sa page mère |
 | 1.43.27 | correction : les paramètres étaient rendus dans la zone masquée |
