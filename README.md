@@ -102,10 +102,25 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.45.3**, du 31 août 2026.
+Version actuelle : **1.45.18**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.45.18 | aide au choix repliée en haut des systèmes |
+| 1.45.17 | sous-titres des systèmes débarrassés de leurs doublons |
+| 1.45.16 | tri par niveau ajouté, ordre du menu corrigé |
+| 1.45.15 | introduction des systèmes resserrée, sigles rétablis |
+| 1.45.14 | niveau du système affiché à côté de son nom |
+| 1.45.13 | ordre du tri aligné sur celui de la fiche |
+| 1.45.12 | recherche du tableau ramenée sur une seule ligne |
+| 1.45.11 | intitulés du tri réduits à un mot |
+| 1.45.10 | tri des systèmes selon sept critères |
+| 1.45.9 | les jauges des systèmes suivent le chiffre affiché |
+| 1.45.8 | les deux mentions du vrai compte portent le même cartouche |
+| 1.45.7 | changer de tableau le recale au lieu de remonter en haut |
+| 1.45.6 | jauges des systèmes réparées, mention du vrai compte en cartouche |
+| 1.45.5 | balayage à deux niveaux sur le tableau des mains |
+| 1.45.4 | recherche en deux champs, balayage des tableaux, en-tête compact |
 | 1.45.3 | titre des mains souples raccourci |
 | 1.45.2 | la recherche entoure à nouveau la case trouvée |
 | 1.45.1 | les onglets du journal deviennent des vues à part entière |

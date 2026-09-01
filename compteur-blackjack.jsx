@@ -272,6 +272,19 @@ const CSS = `
 `;
 
 const S = {
+  /* Boutons carrés de la ligne de recherche : la même surface tactile que les
+     champs, sans le mot qui aurait forcé un retour à la ligne. */
+  asRecherche: {
+    flexShrink: 0,
+    width: 40,
+    border: "1px solid var(--regle)",
+    borderRadius: 3,
+    background: "var(--panneau)",
+    color: "var(--encre)",
+    fontSize: 14,
+    fontWeight: 700,
+    lineHeight: 1,
+  },
   titreChoix: {
     fontSize: 12,
     fontWeight: 700,
@@ -403,7 +416,30 @@ function LigneMobile({ sy, actif, ouvert, basculer, choisir }) {
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
         <button onClick={choisir} style={{ flex: 1, textAlign: "left" }}>
-          <div style={{ fontWeight: 700, fontSize: 16.5 }}>{sy.nom}</div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 7, flexWrap: "wrap" }}>
+            <span style={{ fontWeight: 700, fontSize: 16.5 }}>{sy.nom}</span>
+            {/* Le niveau accompagne le nom sans peser : un filet, pas de fond,
+                à la différence du cartouche du vrai compte qui, lui, énonce
+                une contrainte. */}
+            {sy.niveau && (
+              <span
+                className="mono"
+                title={`Niveau ${sy.niveau} — nombre de valeurs différentes à retenir`}
+                style={{
+                  border: "1px solid var(--regle)",
+                  borderRadius: 2,
+                  padding: "1px 5px",
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: ".06em",
+                  color: "var(--encre2)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                NIVEAU {sy.niveau}
+              </span>
+            )}
+          </div>
           <div style={{ fontSize: 13, color: "var(--encre2)", marginTop: 1 }}>{sy.sous}</div>
           {/* Le barème sur dix cartes : on lit ce que fait le système avant de
               lire ses corrélations. */}
@@ -475,13 +511,16 @@ function LigneMobile({ sy, actif, ouvert, basculer, choisir }) {
           remplace le sigle, qu'il fallait aller chercher en haut de page. */}
       <div style={{ display: "grid", gap: 6, marginTop: 11 }}>
         {[
-          ["Mise", sy.bc, "var(--bleu)", "savoir quand miser gros"],
-          ["Jeu", sy.pe, "var(--or)", "savoir quand dévier du tableau"],
-          ["Assurance", sy.ic, "var(--ok)", "savoir quand assurer"],
-        ].map(([nom, v, couleur, quoi]) => (
+          ["Mise", "CM", sy.bc, "var(--bleu)", "corrélation de mise"],
+          ["Jeu", "EJ", sy.pe, "var(--or)", "efficacité de jeu"],
+          ["Assurance", "CA", sy.ic, "var(--ok)", "corrélation d'assurance"],
+        ].map(([nom, sigle, v, couleur, quoi]) => (
           <div key={nom} style={{ display: "flex", alignItems: "center", gap: 9 }}>
-            <span style={{ fontSize: 11.5, color: "var(--encre2)", width: 66, flexShrink: 0 }} title={quoi}>
-              {nom}
+            <span style={{ fontSize: 11.5, color: "var(--encre2)", width: 78, flexShrink: 0 }} title={quoi}>
+              {nom}{" "}
+              <span className="mono" style={{ fontSize: 9.5, opacity: 0.7 }}>
+                {sigle}
+              </span>
             </span>
             <span
               style={{
@@ -497,11 +536,19 @@ function LigneMobile({ sy, actif, ouvert, basculer, choisir }) {
               <span
                 style={{
                   position: "absolute",
-                  inset: 0,
-                  /* L'échelle part de 0,5 : sous cette valeur un indicateur
-                     n'a plus d'intérêt pratique, et l'étirement rend les
-                     écarts entre systèmes lisibles. */
-                  width: `${Math.max(0, Math.min(1, (v - 0.5) / 0.5)) * 100}%`,
+                  /* Surtout pas « inset: 0 » ici : il pose left ET right à
+                     zéro, ce qui annule la largeur et remplit toute la barre.
+                     C'est ce qui rendait les trois jauges identiques. */
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  /* Échelle de 0 à 1, celle de l'indicateur lui-même : une
+                     barre à mi-course veut dire 0,50. Un étirement rendrait
+                     les écarts plus visibles, mais ferait mentir le chiffre
+                     écrit juste à côté.
+                     Les valeurs sont écrites « 0,97 » : sans conversion, la
+                     soustraction donne NaN et la barre reste pleine. */
+                  width: `${Math.max(0, Math.min(1, parseFloat(String(v).replace(",", ".")))) * 100}%`,
                   background: couleur,
                   opacity: 0.8,
                 }}
@@ -513,8 +560,31 @@ function LigneMobile({ sy, actif, ouvert, basculer, choisir }) {
           </div>
         ))}
       </div>
-      <div style={{ ...S.eyebrow, fontSize: 9.5, color: "var(--encre2)", marginTop: 8 }}>
-        {sy.tc ? "vrai compte requis" : "sans division"}
+      {/* En cartouche : c'est une contrainte d'usage, pas une note de bas de
+          page — elle décide si l'on doit diviser de tête à chaque main. */}
+      <div style={{ marginTop: 9 }}>
+        <span
+          className="mono"
+          style={{
+            display: "inline-block",
+            /* Les deux états portent le même cartouche : seule la teinte
+               change. « Sans division » n'est pas un moindre cas, c'est
+               l'autre réponse à la même question. */
+            border: `1px solid ${sy.tc ? "var(--or)" : "var(--bleu)"}`,
+            background: sy.tc
+              ? "color-mix(in srgb, var(--or) 16%, var(--panneau))"
+              : "color-mix(in srgb, var(--bleu) 14%, var(--panneau))",
+            color: "var(--encre)",
+            borderRadius: 2,
+            padding: "3px 7px",
+            fontSize: 9.5,
+            fontWeight: 700,
+            letterSpacing: ".08em",
+            textTransform: "uppercase",
+          }}
+        >
+          {sy.tc ? "vrai compte requis" : "sans division"}
+        </span>
       </div>
 
       {ouvert && (
@@ -558,8 +628,40 @@ function LigneMobile({ sy, actif, ouvert, basculer, choisir }) {
   );
 }
 
+/* Les tris proposés. Chacun donne la valeur à comparer, et le sens : on veut
+   toujours le « meilleur » en tête, ce qui n'est pas toujours le plus grand. */
+const TRIS = [
+  /* L'ordre suit celui de la carte, de haut en bas : le niveau contre le nom,
+     puis ce que détaille le bouton « i », puis les trois jauges, puis le
+     cartouche du vrai compte. */
+  { v: "defaut", l: "Ordre conseillé" },
+  { v: "niveau", l: "Niveau", cle: (sy) => sy.niveau ?? 9, sens: 1 },
+  { v: "precision", l: "Précision", cle: (sy) => sy.precision ?? 0, sens: -1 },
+  { v: "simplicite", l: "Simplicité", cle: (sy) => sy.complexite ?? 9, sens: 1 },
+  { v: "mise", l: "Mise", cle: (sy) => nombre(sy.bc), sens: -1 },
+  { v: "jeu", l: "Jeu", cle: (sy) => nombre(sy.pe), sens: -1 },
+  { v: "assurance", l: "Assurance", cle: (sy) => nombre(sy.ic), sens: -1 },
+  { v: "division", l: "Sans division", cle: (sy) => (sy.tc ? 1 : 0), sens: 1 },
+];
+
+/** Les indicateurs sont écrits « 0,97 » : il faut les rendre calculables. */
+const nombre = (v) => parseFloat(String(v).replace(",", ".")) || 0;
+
 function VueMenu({ systemeId, setSysteme, allerA, mobile, wrap }) {
   const [info, setInfo] = useState(null);
+  const [tri, setTri] = useState("defaut");
+  const [conseilsVus, setConseilsVus] = useState(false);
+
+  /* Le tri ne réordonne que l'affichage : ORDRE reste l'ordre d'apprentissage,
+     celui qu'on suit quand on ne cherche rien de particulier. */
+  const listeTriee = (() => {
+    const t = TRIS.find((x) => x.v === tri);
+    if (!t?.cle) return ORDRE;
+    return [...ORDRE].sort((a, b) => {
+      const d = (t.cle(SYSTEMS[a]) - t.cle(SYSTEMS[b])) * t.sens;
+      return d || ORDRE.indexOf(a) - ORDRE.indexOf(b);
+    });
+  })();
 
   /* Le détail se referme dès qu'on agit ailleurs, comme les panneaux du journal
      et des paramètres. */
@@ -590,17 +692,95 @@ function VueMenu({ systemeId, setSysteme, allerA, mobile, wrap }) {
           Systèmes de comptage
         </h1>
         <p style={{ fontSize: mobile ? 15 : 16.5, lineHeight: 1.62, color: "var(--encre2)", margin: 0 }}>
-          {mobile ? "Touchez le bouton d'info" : "Survolez le bouton d'info"} d'une ligne pour le résumé, ou
-          choisissez un système pour ouvrir sa fiche, son compteur et ses exercices. Les trois jauges viennent des
-          simulations publiées : <b style={{ color: "var(--encre)" }}>mise</b> pour savoir quand miser gros,{" "}
-          <b style={{ color: "var(--encre)" }}>jeu</b> pour savoir quand dévier du tableau, et{" "}
-          <b style={{ color: "var(--encre)" }}>assurance</b>. Plus la barre est longue, mieux c'est.
+          Trois jauges mesurent chaque système, d'après les simulations publiées.{" "}
+          <b style={{ color: "var(--encre)" }}>Mise</b> (CM) dit s'il sait quand miser gros,{" "}
+          <b style={{ color: "var(--encre)" }}>Jeu</b> (EJ) quand dévier du tableau,{" "}
+          <b style={{ color: "var(--encre)" }}>Assurance</b> (CA) quand assurer. Plus la barre est longue, mieux c'est —
+          mais un système précis se compte plus difficilement. Le bouton « i » donne le résumé, la carte ouvre la fiche.
         </p>
+      </div>
+
+      {/* Aide au choix, repliée : elle arrivait en bas de page, après les neuf
+          systèmes — donc trop tard pour aider à choisir. En haut mais fermée,
+          elle est disponible sans encombrer. */}
+      <button
+        onClick={() => setConseilsVus((o) => !o)}
+        aria-expanded={conseilsVus}
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 10,
+          ...S.panneau,
+          padding: "11px 14px",
+          marginBottom: 10,
+          textAlign: "left",
+        }}
+      >
+        <span style={{ fontSize: 14, fontWeight: 700 }}>Lequel choisir ?</span>
+        <span className="mono" aria-hidden="true" style={{ fontSize: 15, color: "var(--encre2)", flexShrink: 0 }}>
+          {conseilsVus ? "−" : "+"}
+        </span>
+      </button>
+
+      {conseilsVus && (
+        <div
+          className="bjc-pop"
+          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(210px,1fr))", gap: 10, marginBottom: 12 }}
+        >
+          {[
+            ["Si vous débutez", "Hi-Lo. Aucune exception raisonnable.", "hilo"],
+            ["Si la division vous bloque", "KO ou Red 7 : le compte se lit tel quel.", "ko"],
+            ["Après le Hi-Lo", "Zen Count : plus précis, sans second compteur.", "zen"],
+            ["Pour jouer sans effort", "Ace-Five : gain minime, erreur quasi nulle.", "ace5"],
+          ].map(([titre, texte, id]) => (
+            <button
+              key={id}
+              onClick={() => {
+                setSysteme(id);
+                allerA("fiche");
+              }}
+              style={{ ...S.panneau, padding: "15px 16px", textAlign: "left" }}
+            >
+              <div style={{ ...S.eyebrow, marginBottom: 6 }}>{titre}</div>
+              <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>{texte}</div>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Une seule ligne : un menu déroulant natif prend la place d'un mot,
+          là où des boutons de tri auraient pris trois rangées. */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+        <span style={{ ...S.eyebrow, fontSize: 9.5, color: "var(--encre2)", flexShrink: 0 }}>Trier</span>
+        <select
+          value={tri}
+          onChange={(e) => setTri(e.target.value)}
+          aria-label="Trier les systèmes"
+          style={{
+            flex: 1,
+            minWidth: 0,
+            border: "1px solid var(--regle)",
+            background: "var(--panneau)",
+            color: "var(--encre)",
+            borderRadius: 3,
+            padding: "7px 9px",
+            fontSize: 13,
+            fontFamily: "inherit",
+          }}
+        >
+          {TRIS.map((t) => (
+            <option key={t.v} value={t.v}>
+              {t.l}
+            </option>
+          ))}
+        </select>
       </div>
 
       {mobile ? (
         <div style={{ display: "grid", gap: 10 }}>
-          {ORDRE.map((id) => (
+          {listeTriee.map((id) => (
             <LigneMobile
               key={id}
               sy={SYSTEMS[id]}
@@ -637,7 +817,7 @@ function VueMenu({ systemeId, setSysteme, allerA, mobile, wrap }) {
               </tr>
             </thead>
             <tbody>
-              {ORDRE.map((id) => {
+              {listeTriee.map((id) => {
                 const sy = SYSTEMS[id];
                 const actif = id === systemeId;
                 return (
@@ -734,26 +914,21 @@ function VueMenu({ systemeId, setSysteme, allerA, mobile, wrap }) {
         </div>
       )}
 
-      <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(210px,1fr))", gap: 10 }}>
-        {[
-          ["Si vous débutez", "Hi-Lo. Aucune exception raisonnable.", "hilo"],
-          ["Si la division vous bloque", "KO ou Red 7 : le compte se lit tel quel.", "ko"],
-          ["Après le Hi-Lo", "Zen Count : plus précis, sans second compteur.", "zen"],
-          ["Pour jouer sans effort", "Ace-Five : gain minime, erreur quasi nulle.", "ace5"],
-        ].map(([titre, texte, id]) => (
-          <button
-            key={id}
-            onClick={() => {
-              setSysteme(id);
-              allerA("fiche");
-            }}
-            style={{ ...S.panneau, padding: "15px 16px", textAlign: "left" }}
-          >
-            <div style={{ ...S.eyebrow, marginBottom: 6 }}>{titre}</div>
-            <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>{texte}</div>
-          </button>
-        ))}
-      </div>
+
+      {/* Ce que fait l'application, dit une fois — sous le menu, pour ne pas
+          repousser les quatre entrées hors de l'écran. */}
+      <p
+        style={{
+          textAlign: "center",
+          fontStyle: "italic",
+          fontSize: mobile ? 12.5 : 14,
+          lineHeight: 1.5,
+          color: "var(--encre2)",
+          margin: mobile ? "16px 0 0" : "24px 0 0",
+        }}
+      >
+        Application d'apprentissage du blackjack. Tout fonctionne hors ligne.
+      </p>
     </div>
   );
 }
@@ -4010,10 +4185,36 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
   const setRegle = (v) => majReglage("regle", v);
   const setPaquets = (v) => majReglage("nbPaquets", v);
   const [selection, setSelection] = useState(null);
-  const [recherche, setRecherche] = useState("");
+  const [maMain, setMaMain] = useState("");
+  const [croupier, setCroupier] = useState("");
   const [erreurRecherche, setErreurRecherche] = useState(false);
   const [detail, setDetail] = useState(null);
   const [tableauVu, setTableauVu] = useState("dur");
+  /* Deux niveaux de balayage. Sur la grille, le geste fait défiler les trois
+     tableaux et s'arrête là — il ne remonte pas à la page. Ailleurs sur
+     l'écran, c'est le balayage de page qui joue et l'on passe au compteur. */
+  const zoneTableaux = useRef(null);
+  const balayageBrut = useBalayage(
+    [{ v: "dur" }, { v: "mou" }, { v: "paires" }],
+    tableauVu,
+    setTableauVu,
+    false
+  );
+  const balayageTableau = {
+    onTouchStart: (e) => {
+      e.stopPropagation();
+      balayageBrut.onTouchStart(e);
+    },
+    onTouchEnd: (e) => {
+      e.stopPropagation();
+      const avant = tableauVu;
+      balayageBrut.onTouchEnd(e);
+      /* Si le geste a changé de tableau, on le ramène sous les barres. */
+      requestAnimationFrame(() => {
+        if (tableauVu !== avant) amener(zoneTableaux.current);
+      });
+    },
+  };
   const [reglagesVus, setReglagesVus] = useState(false);
   const [infoVue, setInfoVue] = useState(false);
 
@@ -4075,16 +4276,24 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
     return null;
   };
 
-  const lancerRecherche = (texte) => {
-    /* Champ vidé : on efface aussi le résultat, sinon le bandeau reste ouvert
-       sur une main qu'on ne cherche plus. */
-    if (!texte.trim()) { setErreurRecherche(false); choisir(null); return; }
+  const lancerRecherche = (main, hauteur) => {
+    /* Les deux champs sont réunis ici : le reste de la recherche n'a pas à
+       savoir qu'ils sont séparés à l'écran. */
+    const texte = `${main ?? ""} ${hauteur ?? ""}`;
+    if (!String(main ?? "").trim() || !String(hauteur ?? "").trim()) {
+      setErreurRecherche(false);
+      choisir(null);
+      return;
+    }
     const r = chercher(texte);
     if (!r) { setErreurRecherche(texte.trim().length > 1); return; }
     setErreurRecherche(false);
     /* La main trouvée peut être dans un autre tableau que celui affiché. */
     setTableauVu(r.cible.split("-")[0]);
-    choisir(r.cible, r.main, r.hauteur, r.code, r.cartes, r.titre);
+    /* La grille repère ses cases par « main|hauteur ». La recherche produisait
+       un identifiant d'un autre format, et la case trouvée ne s'entourait plus
+       de doré. */
+    choisir(`${r.main}|${r.hauteur}`, r.main, r.hauteur, r.code, r.cartes, r.titre);
   };
 
   const choisir = (cible, main, hauteur, code, cartesExactes, titre) => {
@@ -4277,24 +4486,22 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
         )}
       </div>
 
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
+      {/* Deux champs plutôt qu'un : l'espace entre la main et la hauteur du
+          croupier se tapait à la main, et le clavier numérique d'un téléphone
+          l'enfouit sous une touche de fonction. Chacun a sa place. */}
+      <div style={{ display: "flex", gap: 6, alignItems: "stretch", marginBottom: 8 }}>
         <input
-          value={recherche}
-          onChange={(e) => { setRecherche(e.target.value); lancerRecherche(e.target.value); }}
-          /* Toucher le champ remonte en haut : le bandeau de réponse s'affiche
-             sous l'en-tête, il doit être visible quand la main apparaît. */
+          value={maMain}
+          onChange={(e) => { setMaMain(e.target.value); lancerRecherche(e.target.value, croupier); }}
           onFocus={() => window.scrollTo(0, 0)}
-          placeholder="Votre main et la carte du croupier — 16 10"
-          aria-label="Rechercher une décision"
-          /* Clavier numérique : la saisie est faite de chiffres et d'espaces.
-             L'as se pose avec le bouton dédié, puisque ce clavier n'a pas de
-             lettres. */
+          placeholder="Main"
+          aria-label="Votre main"
           inputMode="numeric"
           enterKeyHint="search"
           style={{
-            flex: "1 1 200px",
-            width: "auto",
-            padding: "11px 13px",
+            flex: "3 1 0",
+            minWidth: 0,
+            padding: "11px 11px",
             border: "1px solid " + (erreurRecherche ? "var(--rouge)" : "var(--regle)"),
             borderRadius: 3,
             background: "var(--panneau)",
@@ -4303,40 +4510,60 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
             fontFamily: "inherit",
           }}
         />
-        <button
-          onClick={() => {
-            const v = recherche + (recherche && !recherche.endsWith(" ") ? "" : "") + "A";
-            setRecherche(v);
-            lancerRecherche(v);
-          }}
-          aria-label="Ajouter un as"
+        <input
+          value={croupier}
+          onChange={(e) => { setCroupier(e.target.value); lancerRecherche(maMain, e.target.value); }}
+          onFocus={() => window.scrollTo(0, 0)}
+          placeholder="Croup."
+          aria-label="Carte du croupier"
+          inputMode="numeric"
+          enterKeyHint="search"
           style={{
-            border: "1px solid var(--regle)",
-            padding: "10px 15px",
+            flex: "2 1 0",
+            minWidth: 0,
+            padding: "11px 11px",
+            border: "1px solid " + (erreurRecherche ? "var(--rouge)" : "var(--regle)"),
             borderRadius: 3,
-            fontSize: 16,
-            fontWeight: 700,
-            color: "var(--encre)",
             background: "var(--panneau)",
-            flexShrink: 0,
+            color: "var(--encre)",
+            fontSize: 15,
+            fontFamily: "inherit",
           }}
+        />
+        {/* L'as ne figure pas sur un clavier numérique : deux boutons carrés
+            le posent dans l'un ou l'autre champ, sans prendre de rangée. */}
+        <button
+          onClick={() => { const v = maMain + "A"; setMaMain(v); lancerRecherche(v, croupier); }}
+          aria-label="As dans ma main"
+          title="As dans ma main"
+          style={{ ...S.asRecherche, marginLeft: -4 }}
         >
           A
         </button>
-        {recherche && (
+        <button
+          onClick={() => { setCroupier("A"); lancerRecherche(maMain, "A"); }}
+          aria-label="As au croupier"
+          title="As au croupier"
+          style={S.asRecherche}
+        >
+          A
+        </button>
+        {(maMain || croupier) && (
           <button
-            onClick={() => { setRecherche(""); setErreurRecherche(false); choisir(null); }}
-            style={{ border: "1px solid var(--regle)", padding: "10px 14px", borderRadius: 3, fontSize: 13.5, fontWeight: 600, color: "var(--encre2)" }}
+            onClick={() => { setMaMain(""); setCroupier(""); lancerRecherche("", ""); }}
+            aria-label="Effacer la recherche"
+            title="Effacer"
+            style={{ ...S.asRecherche, color: "var(--encre2)", fontWeight: 400, fontSize: 17 }}
           >
-            Effacer
+            ×
           </button>
         )}
       </div>
 
+
       {erreurRecherche && (
         <p style={{ fontSize: 12.5, lineHeight: 1.55, color: "var(--encre2)", margin: "0 0 8px" }}>
-          Écrivez votre total puis la carte du croupier : <b>16 10</b>. Une main souple se note <b>A7 3</b>, une paire{" "}
-          <b>88 as</b>.
+          Votre total à gauche, la carte du croupier à droite. Une main souple se note <b>A7</b>, une paire <b>88</b>.
         </p>
       )}
 
@@ -4432,20 +4659,21 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
           ]}
           valeur={tableauVu}
           onChange={(v) => {
-            /* On remonte AVANT le rendu, comme pour un changement d'onglet :
-               centrer le nouveau tableau le faisait descendre puis remonter. */
-            window.scrollTo(0, 0);
+            /* Le nouveau tableau vient se placer sous les barres collées, au
+               lieu de renvoyer en haut de la page : on compare trois grilles,
+               on ne change pas d'écran. */
             setTableauVu(v);
+            amener(zoneTableaux.current);
           }}
         />
       </div>
 
-      <div>
+      <div ref={zoneTableaux} {...balayageTableau} style={{ touchAction: "pan-y" }}>
       {tableauVu === "dur" && (
         <Grille titre="Mains dures — sans As, ou As compté 1" lignes={tables.dur} mobile={mobile} onCellule={choisir} selection={selection} />
       )}
       {tableauVu === "mou" && (
-        <Grille titre="Mains souples — un As compté 11, soit 13 à 20" lignes={tables.mou} mobile={mobile} onCellule={choisir} selection={selection} />
+        <Grille titre="Mains souples — un As compté 11" lignes={tables.mou} mobile={mobile} onCellule={choisir} selection={selection} />
       )}
       {tableauVu === "paires" && (
         <Grille titre="Paires — séparer ou non" lignes={tables.paires} mobile={mobile} onCellule={choisir} selection={selection} />
@@ -9217,55 +9445,45 @@ function VueAccueil({ sys, allerA, mobile, wrap, enseigne }) {
 
   return (
     <div style={wrap}>
-      {/* Logo en ligne : le jeton centré sur la séparation des deux mots, qui
-          sont forcés à la même largeur. Les valeurs viennent d'une mesure au
-          pixel, pas d'une estimation. */}
-      <div style={{ display: "flex", justifyContent: "center", padding: mobile ? "26px 0 30px" : "44px 0 44px" }}>
-        <svg
-          viewBox="0 0 440 170"
-          aria-label="Big Jack Theory"
-          style={{ width: mobile ? 268 : 330, height: "auto", display: "block" }}
-        >
-          <g transform="translate(84 85) scale(1.875) translate(-32 -32)">
-            <circle cx="32" cy="32" r="29" fill="var(--encre)" />
-            <circle cx="32" cy="32" r="25" fill="none" stroke="var(--papier)" strokeWidth="8.5" strokeDasharray="9.8 9.8" />
-            <circle cx="32" cy="32" r="18.5" fill="var(--encre)" />
-            <circle cx="32" cy="32" r="18.5" fill="none" stroke="var(--papier)" strokeWidth="2" />
-            <circle cx="32" cy="32" r="30" fill="none" stroke="var(--encre)" strokeWidth="1.5" />
-            <path d={TRACES_ENSEIGNE[enseigne ?? "pique"]} fill="var(--papier)" />
-          </g>
-          <text
-            x="172"
-            y="79.8"
-            fill="var(--encre)"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, fontSize: 36, letterSpacing: "-.01em" }}
-          >
-            BIG JACK
-          </text>
-          <text
-            x="175.5"
-            y="119.8"
-            fill="var(--encre)"
-            style={{ fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, fontSize: 36, letterSpacing: ".0562em" }}
-          >
-            THEORY
-          </text>
-        </svg>
-      </div>
-
-      {/* Sous-titre : ce que fait l'application, dit une fois. */}
-      <p
+      {/* En-tête compact : le jeton au-dessus, le nom sur une seule ligne
+          dessous. Les quatre entrées du menu doivent tenir dans l'écran d'un
+          téléphone sans avoir à faire défiler. */}
+      <div
         style={{
-          textAlign: "center",
-          fontStyle: "italic",
-          fontSize: mobile ? 13.5 : 15,
-          lineHeight: 1.5,
-          color: "var(--encre2)",
-          margin: mobile ? "-14px 0 22px" : "-22px 0 30px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: mobile ? 8 : 12,
+          padding: mobile ? "14px 0 18px" : "36px 0 30px",
         }}
       >
-        Application d'apprentissage du blackjack. Tout fonctionne hors ligne.
-      </p>
+        <svg
+          viewBox="0 0 64 64"
+          aria-label="Big Jack Theory"
+          style={{ width: mobile ? 54 : 76, height: "auto", display: "block" }}
+        >
+          <circle cx="32" cy="32" r="29" fill="var(--encre)" />
+          <circle cx="32" cy="32" r="25" fill="none" stroke="var(--papier)" strokeWidth="8.5"
+                  strokeDasharray="7.85 11.78" />
+          <circle cx="32" cy="32" r="18.5" fill="var(--encre)" />
+          <circle cx="32" cy="32" r="18.5" fill="none" stroke="var(--papier)" strokeWidth="2" />
+          <circle cx="32" cy="32" r="30" fill="none" stroke="var(--encre)" strokeWidth="1.5" />
+          <path d={TRACES_ENSEIGNE[enseigne ?? "pique"]} fill="var(--papier)" />
+        </svg>
+        <h1
+          style={{
+            margin: 0,
+            fontSize: mobile ? 26 : 36,
+            fontWeight: 700,
+            letterSpacing: "-.008em",
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+          }}
+        >
+          Big Jack Theory
+        </h1>
+      </div>
+
 
       <div style={{ display: "grid", gap: mobile ? 8 : 9 }}>
         {entrees.map(([v, titre, texte, meta]) => (
@@ -9383,7 +9601,7 @@ function SousNav({ onglets, vue, setVue, mobile, wrap, hauteurEntete, cadre }) {
 }
 
 /** Balayage latéral entre les onglets d'un groupe. */
-function useBalayage(onglets, vue, setVue) {
+function useBalayage(onglets, vue, setVue, remonter = true) {
   /* Même chemin que les boutons de la barre : un seul saut, pas deux. */
   const geste = useRef(null);
   return {
@@ -9401,7 +9619,9 @@ function useBalayage(onglets, vue, setVue) {
       if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.8) return;
       const i = onglets.findIndex((o) => o.v === vue) + (dx < 0 ? 1 : -1);
       if (i >= 0 && i < onglets.length) {
-        window.scrollTo(0, 0);
+        /* Les tableaux de stratégie se replacent eux-mêmes sous les barres :
+           remonter en haut leur ferait perdre la comparaison en cours. */
+        if (remonter) window.scrollTo(0, 0);
         setVue(onglets[i].v);
       }
     },
@@ -9453,7 +9673,13 @@ export default function App() {
      après confirmation. */
   /* Changer de sous-onglet ramène en haut — bouton comme balayage, un seul
      saut puisque les deux passent par setVue. */
-  const groupeCourant = EST_STRATEGIE(vue) ? GROUPE_STRATEGIE : EST_THEORIE(vue) ? GROUPE_THEORIE : null;
+  const groupeCourant = EST_STRATEGIE(vue)
+    ? GROUPE_STRATEGIE
+    : EST_THEORIE(vue)
+    ? GROUPE_THEORIE
+    : EST_JOURNAL(vue)
+    ? GROUPE_JOURNAL
+    : null;
   const balayageGroupe = useBalayage(groupeCourant ?? [], vue, setVue);
   const balayagePage = groupeCourant ? balayageGroupe : {};
 
@@ -9506,10 +9732,14 @@ export default function App() {
        jalon consommé faisait sortir de l'application sans avertissement. */
     try {
       history.replaceState({ bjt: 0 }, "");
+      /* Quatre jalons de départ plutôt que deux : après un rafraîchissement,
+         un jalon perdu suffisait à faire sortir l'application sans que
+         l'avertissement ait pu s'afficher. La marge ne coûte rien. */
       history.pushState({ bjt: 1 }, "");
       history.pushState({ bjt: 2 }, "");
-      /* Les deux jalons de départ comptent aussi dans la réserve. */
-      JALONS.restants = 2;
+      history.pushState({ bjt: 3 }, "");
+      history.pushState({ bjt: 4 }, "");
+      JALONS.restants = 4;
       /* Après un rafraîchissement, le chemin est retrouvé : il lui faut autant
          de jalons qu'il compte de pas, sinon le retour sort trop tôt. */
       if (histoire.current.onglet) poserEtape();

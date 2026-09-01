@@ -175,12 +175,19 @@ async function strategie() {
   a.parTexte("À la table").click(); await a.dormir(470);
   /* Le groupe garde son dernier sous-onglet : on impose le tableau. */
   a.sousOnglet("Tableau")?.click(); await a.dormir(450);
-  const attendu = [["16 10", /Tirer/], ["11 10", /Doubler/], ["88 10", /Séparer/], ["A7 3", /Doubler/], ["12 2", /Tirer/]];
-  for (const [main, decision] of attendu) {
-    a.saisir(a.champ("Rechercher une décision"), main);
+  /* Deux champs depuis la 1.45.4 : la main d'un côté, la hauteur de l'autre. */
+  const attendu = [["16", "10", /Tirer/], ["11", "10", /Doubler/], ["88", "10", /Séparer/], ["A7", "3", /Doubler/], ["12", "2", /Tirer/]];
+  for (const [main, hauteur, decision] of attendu) {
+    a.saisir(a.champ("Votre main"), main);
+    await a.dormir(180);
+    a.saisir(a.champ("Carte du croupier"), hauteur);
     await a.dormir(450);
     const bandeau = [...a.d.querySelectorAll("#racine div")].find((x) => x.style.position === "sticky" && x.style.background === "var(--ecran)");
-    verifier("« " + main + " »", !!bandeau && decision.test(bandeau.textContent), bandeau ? bandeau.textContent.replace(/\s+/g, " ").slice(0, 34) : "aucun résultat");
+    verifier("« " + main + " contre " + hauteur + " »", !!bandeau && decision.test(bandeau.textContent), bandeau ? bandeau.textContent.replace(/\s+/g, " ").slice(0, 34) : "aucun résultat");
+    /* La case trouvée doit aussi s'entourer : la recherche et la grille se sont
+       déjà parlé dans deux formats différents, sans que rien ne le signale. */
+    const entouree = a.boutons().filter((x) => x.style.border === "2px solid var(--or)");
+    verifier("  et la case s'entoure", entouree.length === 1, entouree.length + " case(s)");
   }
   a.dom.window.close();
   return a.erreurs;
@@ -260,7 +267,38 @@ async function apparence() {
   /* Les trois indicateurs sont des jauges nommées, plus des sigles. */
   const barres = [...ligne.querySelectorAll("span")].filter((x) => x.style.height === "5px");
   verifier("trois jauges d'indicateur", barres.length === 3, barres.length + " jauge(s)");
-  verifier("les sigles CM/EJ/CA ont disparu", !/\bCM\b|\bEJ\b|\bCA\b/.test(a.d.getElementById("racine").textContent));
+  /* Elles doivent se remplir différemment : une largeur absente ou identique
+     partout signalerait un calcul cassé — c'est arrivé deux fois. */
+  const largeurs = barres.map((b) => b.children[0]?.style.width ?? "");
+  verifier("les jauges se remplissent", largeurs.every((w) => /%$/.test(w)), largeurs.join(" · "));
+  verifier("et diffèrent entre elles", new Set(largeurs).size > 1, largeurs.join(" · "));
+
+  /* Le tri des systèmes : sept critères, sur une seule ligne. */
+  /* L'aide au choix est repliée : en bas de page, elle passait inaperçue. */
+  const aide = a.boutons().find((x) => /Lequel choisir/.test(x.textContent));
+  verifier("l'aide au choix est repliée", !!aide && aide.getAttribute("aria-expanded") === "false");
+  if (aide) {
+    aide.click(); await a.dormir(430);
+    const conseils = a.boutons().filter((x) => /Si vous débutez|Si la division|Après le Hi-Lo|sans effort/.test(x.textContent));
+    verifier("elle propose quatre conseils", conseils.length === 4, conseils.length + " conseil(s)");
+    aide.click(); await a.dormir(400);
+  }
+
+  const menuTri = a.d.querySelector('#racine select[aria-label="Trier les systèmes"]');
+  verifier("le tri des systèmes existe", !!menuTri && menuTri.options.length === 8, menuTri ? menuTri.options.length + " choix" : "absent");
+  if (menuTri) {
+    const premier = () => a.d.querySelector("#racine [data-systeme] div")?.textContent.trim().slice(0, 10);
+    const avant = premier();
+    menuTri.value = "jeu";
+    menuTri.dispatchEvent(new a.w.Event("change", { bubbles: true }));
+    await a.dormir(420);
+    verifier("il réordonne la liste", premier() !== avant, avant + " → " + premier());
+  }
+  /* Les sigles accompagnent les noms — sur les jauges et dans l'introduction.
+     Un temps retirés, ils manquaient à la lecture. */
+  verifier("les sigles accompagnent les jauges",
+    barres.every((b) => /CM|EJ|CA/.test(b.previousElementSibling?.textContent ?? "")),
+    barres.map((b) => b.previousElementSibling?.textContent.trim()).join(" · "));
 
   a.dom.window.close();
   return a.erreurs;
