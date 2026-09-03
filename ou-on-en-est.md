@@ -3,7 +3,7 @@
 Note de reprise. À garder dans la base de connaissances du projet, et à
 régénérer en fin de chaque session de travail.
 
-**Version 1.47.8**, du 31 août 2026. Code de protection : **4270**.
+**Version 1.47.9**, du 3 septembre 2026. Code de protection : **4270**.
 Versionnage : `1.partie.retouche` — le troisième nombre avance tant qu'on
 retouche la même partie, le deuxième dès qu'on passe à une autre.
 
@@ -44,13 +44,15 @@ qu'on ait à les ouvrir. Profils de table, sauvegarde, code de protection.
 | `entree.jsx` | 3 lignes — monte `App` dans `#racine` |
 | `compteur-blackjack.jsx` | 11 464 lignes — les composants, `export default App` |
 | `src/` | 14 modules, ~1 800 lignes au total |
-| `tests/` | 68 vérifications, lit le fichier compilé |
+| `tests/` | 99 vérifications, lit le fichier compilé |
 
 Les modules de `src/` : cartes, dates, defilement, entrainement, lectures,
 lexique, mises, navigation, sons, stockage, strategie, systemes, themes,
 version. La règle : **tout ce qui n'est pas un composant y va**.
 
-Pour se repérer dans le fichier principal, voir `carte-du-code.md`.
+Pour se repérer dans le fichier principal, voir `carte-du-code.md`. Les numéros
+de ligne qu'il donne restent valables en 1.47.9 : la modification a remplacé
+une ligne par une ligne.
 
 ---
 
@@ -71,22 +73,26 @@ Tri des indices par seuil. Jalons d'historique reposés après rafraîchissement
 **Partie 47 — les exercices.** Bouton Réglages en fin de série, récapitulatif
 des mains ratées, situations à revoir conservées entre les séances, maîtrise
 déplacée dans la progression avec repère de vitesse visible. Corrections :
-abandon sur sa rangée, fin du Vrai compte.
+abandon sur sa rangée, fin du Vrai compte. En 1.47.9, le bouton « Tout effacer »
+de l'historique des séries devient « Effacer l'historique ».
 
 ---
 
-## Session du 3 septembre 2026 — remise en ordre
+## Session du 3 septembre 2026
 
-Aucune modification du code. Le projet a été transféré dans un projet Claude et
-la base de connaissances nettoyée : les fichiers compilés et les images en ont
-été retirés, soit 1,4 Mo de contenu illisible sur 1,9 Mo.
+**Remise en ordre.** Le projet a été transféré dans un projet Claude et la base
+de connaissances nettoyée. Le dépôt GitHub était resté en 1.45.20, trente-huit
+versions en arrière ; la 1.47.8 puis la 1.47.9 sont à publier.
 
-**`entree.jsx` a été reconstruit.** Il avait disparu à l'export des artefacts,
-et ne se trouvait ni à la racine ni dans `src/`. Son contenu a été rétabli à
-partir de deux indices : `compteur-blackjack.jsx` se termine par
-`export default function App()` sans jamais appeler `createRoot`, et
-`tests.mjs` interroge le conteneur `#racine` à plus de trente reprises.
-**Non encore validé par une recompilation.**
+**`entree.jsx` reconstruit.** Il avait disparu à l'export des artefacts et ne se
+trouvait ni à la racine ni dans `src/`. Rétabli à partir de deux indices :
+`compteur-blackjack.jsx` se termine par `export default function App()` sans
+jamais appeler `createRoot`, et `tests.mjs` interroge `#racine` à plus de trente
+reprises. **Validé** : la compilation aboutit et les 99 vérifications passent.
+
+**Date de version corrigée.** `src/version.js` portait « 29 août 2026 » alors
+que le README annonçait le 31 août. La 1.47.9 porte le 3 septembre, ce qui
+tranche la question.
 
 ---
 
@@ -104,7 +110,9 @@ chacun plus de mille lignes :
 | `App` | ~1 200 | l'état global et le routage |
 
 Le journal reste le candidat le plus net : c'est le seul où un composant unique
-dépasse les deux mille lignes.
+dépasse les deux mille lignes. Ses aides — regroupement par période, import et
+export CSV, histogramme, courbe cumulée — sont déjà des fonctions pures
+détachées, extractibles vers `src/` sans toucher au composant.
 
 **Le chantier 8** — la présentation des façons de miser. Jamais abordé.
 
@@ -112,9 +120,7 @@ dépasse les deux mille lignes.
 jamais été exécuté — l'environnement où il a été écrit n'avait pas accès aux
 serveurs Android. `INSTALLATION.md` le signale toujours comme non testé.
 
-**La date de version.** `src/version.js` porte `DATE_VERSION = "29 août 2026"`
-alors que le README annonce la 1.47.8 au 31 août 2026. L'une des deux est
-fausse.
+**`tests/LISEZMOI.md`** annonce 68 vérifications ; la suite en compte 99.
 
 ---
 
@@ -142,9 +148,12 @@ esbuild entree.jsx --bundle --minify --format=iife --loader:.jsx=jsx \
   --outfile=bundle.js
 ```
 
-Le résultat s'insère entre les balises `<script>` de `index.html`. Les tests
-lisent `big-jack-theory.html`, le fichier compilé : recompiler avant de lancer
-`node tests.mjs`.
+Le bundle s'insère entre les balises `<script>` de `index.html` — dans ce
+fichier, entre la ligne 54 et la balise fermante, le reste de l'enveloppe étant
+conservé tel quel. Même opération pour `big-jack-theory.html`, la version
+autonome, dont le `<script>` s'ouvre à la ligne 24.
+
+Les tests lisent `big-jack-theory.html` : recompiler avant `node tests.mjs`.
 
 Le numéro de version vit dans `src/version.js`, et doit être reporté dans
 `sw.js` (constante `CACHE`) et dans le tableau du README à chaque livraison.
@@ -153,13 +162,15 @@ Le numéro de version vit dans `src/version.js`, et doit être reporté dans
 
 ## Base de connaissances du projet
 
-**À y déposer** : cette fiche, `carte-du-code.md`, `entree.jsx`,
-`compteur-blackjack.jsx`, les quatorze modules de `src/`, `tests.mjs`,
-`outils.mjs`, `sw.js`, `manifest.webmanifest`, `apk.yml`, `README.md`,
-`INSTALLATION.md`, `LISEZMOI.md`, `PROCEDURE-SAUVEGARDE.md`,
-`systeme-visuel.md`, `brief-design.md`. Environ 710 Ko.
+**À y déposer** : cette fiche, `carte-du-code.md`, `instructions-projet.md`,
+`entree.jsx`, `compteur-blackjack.jsx`, les quatorze modules de `src/`,
+`tests.mjs`, `outils.mjs`, `sw.js`, `manifest.webmanifest`, `apk.yml`,
+`README.md`, `INSTALLATION.md`, `LISEZMOI.md`, `PROCEDURE-SAUVEGARDE.md`,
+`systeme-visuel.md`, `brief-design.md`.
 
-**À ne pas y mettre** : les fichiers compilés (`index.html`,
-`big-jack-theory.html`) ni les images. Ils restent indispensables sur le
-disque — les tests lisent `big-jack-theory.html` — mais en base de
-connaissances ce sont 1,4 Mo de bundle minifié illisible.
+**Les fichiers compilés** — `index.html` et `big-jack-theory.html` — pèsent
+478 Ko chacun de bundle minifié. Les déposer entiers consomme la fenêtre de
+contexte pour rien, mais les retirer complètement empêche de produire un
+`index.html` livrable. **Bon compromis** : déposer `index.html` avec le contenu
+entre les balises `<script>` vidé — l'enveloppe seule, quelques kilo-octets.
+Les images n'ont rien à faire dans la base : extraction de texte uniquement.

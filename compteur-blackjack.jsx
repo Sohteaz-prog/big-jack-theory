@@ -4247,7 +4247,7 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
                   onClick={() => setConfirmeBilans(true)}
                   style={{ fontSize: 12.5, fontWeight: 600, color: "var(--encre2)", textDecoration: "underline", textUnderlineOffset: 2 }}
                 >
-                  Tout effacer
+                  Effacer l'historique
                 </button>
               ) : (
                 <span style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>

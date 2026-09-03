@@ -102,10 +102,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.47.8**, du 31 août 2026.
+Version actuelle : **1.47.9**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.47.9 | « Effacer l'historique » remplace « Tout effacer » dans les exercices |
 | 1.47.8 | explication de la remise à zéro déplacée dans la confirmation |
 | 1.47.7 | situations à revoir, conservées entre les séances |
 | 1.47.6 | récapitulatif des mains ratées en fin de série |
