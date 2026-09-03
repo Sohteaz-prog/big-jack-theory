@@ -11,12 +11,46 @@ artificielle générative. Les tableaux de stratégie et les indicateurs chiffr�
 proviennent de sources publiées, citées dans la section Lectures ; vérifiez-y ce
 qui vous engage.
 
-## Tests
+## Construire et tester
 
-Une suite de tests vit dans `tests/`. Elle lit le fichier compilé et vérifie
-la navigation, le bouton retour, l'exactitude du tableau de stratégie et
-l'apparence issue de la refonte. Lancez `node tests.mjs` après chaque
-recompilation ; le LISEZMOI du dossier explique ce qu'elle couvre.
+Une fois, au premier usage :
+
+```
+npm install
+```
+
+Puis, à chaque livraison :
+
+```
+npm run livrer
+```
+
+Cette commande enchaîne trois étapes : elle reporte le numéro de version,
+recompile l'application, et lance les tests. Elle s'arrête à la première qui
+échoue.
+
+Les commandes séparées, si besoin :
+
+| | |
+|---|---|
+| `npm run reporter` | reporte le numéro de `src/version.js` vers `sw.js` et ce README |
+| `npm run verifier` | contrôle la concordance sans rien modifier |
+| `npm run construire` | compile et insère le bundle dans les deux fichiers HTML |
+| `npm test` | lance les 99 vérifications sur le fichier compilé |
+
+**`src/version.js` fait foi** pour le numéro de version. C'est le seul endroit
+où on l'écrit à la main. Une entrée reste à ajouter au tableau des versions
+ci-dessous : le script signale son absence mais ne l'invente pas.
+
+La suite de tests vit dans `tests/`. Elle lit le fichier compilé et vérifie la
+navigation, le bouton retour, l'exactitude du tableau de stratégie et
+l'apparence issue de la refonte ; le LISEZMOI du dossier explique ce qu'elle
+couvre.
+
+Les versions de React, d'esbuild et de jsdom sont épinglées au numéro exact
+dans `package.json`. Ce n'est pas de la prudence excessive : une compilation
+faite avec une version majeure différente de React produit un bundle qui passe
+les tests et se comporte autrement sur un vrai téléphone.
 
 ## Ce que contient l'application
 
@@ -102,10 +136,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.47.9**, du 3 septembre 2026.
+Version actuelle : **1.48.1**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.48.1 | chaîne de construction : compilation, report de version, tests |
 | 1.47.9 | « Effacer l'historique » remplace « Tout effacer » dans les exercices |
 | 1.47.8 | explication de la remise à zéro déplacée dans la confirmation |
 | 1.47.7 | situations à revoir, conservées entre les séances |
