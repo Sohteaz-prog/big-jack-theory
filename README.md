@@ -102,10 +102,36 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.45.20**, du 31 août 2026.
+Version actuelle : **1.47.8**, du 31 août 2026.
 
 | | |
 |---|---|
+| 1.47.8 | explication de la remise à zéro déplacée dans la confirmation |
+| 1.47.7 | situations à revoir, conservées entre les séances |
+| 1.47.6 | récapitulatif des mains ratées en fin de série |
+| 1.47.5 | chevron partagé, lectures dépliables comme le lexique |
+| 1.47.4 | maîtrise déplacée dans la progression, repère de vitesse visible |
+| 1.47.3 | abandon sur sa rangée, fin du Vrai compte corrigée |
+| 1.47.2 | triangle et chevron dessinés dans l'alerte de perte |
+| 1.47.1 | exercices : bouton Réglages en fin de série, démarrages centrés |
+| 1.46.18 | « déposés » remplace « engagés », flèche entre les montants |
+| 1.46.17 | heure saisie en un champ, deux-points automatique |
+| 1.46.16 | tri des indices ramené sur une seule ligne |
+| 1.46.15 | changement de thème simultané sur toute la page |
+| 1.46.14 | heure de session saisie par deux menus |
+| 1.46.13 | indices triables par seuil, blocs de réglages alignés |
+| 1.46.12 | rappel des corrélations réduit dans les fiches |
+| 1.46.11 | les trois sigles définis en liste plutôt qu'en phrase |
+| 1.46.10 | alerte de perte centrée, fond teinté, sans version verte |
+| 1.46.9 | cible de pénétration portée par le cran, plus en doublon |
+| 1.46.8 | alerte de perte sur une ligne, dépliable avec sa jauge |
+| 1.46.7 | alerte de perte en encre sur papier, couleur dans le bord |
+| 1.46.6 | correction : l'alerte était rendue dans la barre d'onglets |
+| 1.46.5 | mention de cible de pénétration réduite |
+| 1.46.4 | note sur l'abandon déplacée dans une fenêtre |
+| 1.46.3 | formulaire de session : placement fiable, panneau conservé |
+| 1.46.2 | alerte de perte remontée en tête du journal |
+| 1.46.1 | jalons reposés après rafraîchissement, sept ajustements |
 | 1.45.20 | le tableau reste entier quand le bandeau s'ouvre |
 | 1.45.19 | tableau des mains : calage stable, recherche réordonnée |
 | 1.45.18 | aide au choix repliée en haut des systèmes |

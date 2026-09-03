@@ -267,6 +267,27 @@ async function apparence() {
   /* Les trois indicateurs sont des jauges nommées, plus des sigles. */
   const barres = [...ligne.querySelectorAll("span")].filter((x) => x.style.height === "5px");
   verifier("trois jauges d'indicateur", barres.length === 3, barres.length + " jauge(s)");
+
+  /* Les indices de déviation se relisent par seuil : c'est l'ordre où on les
+     rencontre quand le vrai compte monte. */
+  [...a.d.querySelectorAll("#racine [data-systeme] button")].filter((x) => x.style.flex === "1 1 0%")[0]?.click();
+  await a.dormir(540);
+  const parSeuil = a.boutons().find((x) => x.textContent.trim() === "Seuil");
+  verifier("les indices se trient par seuil", !!parSeuil);
+  if (parSeuil) {
+    parSeuil.click(); await a.dormir(440);
+    /* On part du bouton de tri et on ne lit que le tableau qui le suit : la
+       fiche contient d'autres valeurs bleues ailleurs. */
+    const tableau = parSeuil.closest("div")?.nextElementSibling;
+    const seuils = [...(tableau?.querySelectorAll("span.mono") ?? [])]
+      .map((x) => parseFloat(x.textContent.trim().replace("+", "").replace("−", "-")) || 0);
+    const croissant = seuils.every((v, i) => i === 0 || seuils[i - 1] <= v);
+    verifier("  dans l'ordre croissant", croissant, seuils.join(" "));
+  }
+  /* On quitte la fiche par son propre bouton : la barre de navigation y mène
+     au sous-onglet, pas à la liste. */
+  a.boutons().find((x) => /Tous les systèmes/.test(x.textContent))?.click();
+  await a.dormir(540);
   /* Elles doivent se remplir différemment : une largeur absente ou identique
      partout signalerait un calcul cassé — c'est arrivé deux fois. */
   const largeurs = barres.map((b) => b.children[0]?.style.width ?? "");
@@ -304,6 +325,28 @@ async function apparence() {
   return a.erreurs;
 }
 
+/* ── 6 ter. Lectures dépliables ───────────────────────────────────────────── */
+/* Même logique que le lexique : un seul déplié, refermé au clic ailleurs. */
+async function lectures() {
+  console.log("\n6 ter. LECTURES");
+  const a = lancer();
+  await a.dormir(1100);
+  a.parTexte("Comprendre").click(); await a.dormir(520);
+  a.sousOnglet("Lectures").click(); await a.dormir(500);
+  const livres = () => [...a.d.querySelectorAll("#racine [data-livre]")];
+  const ouverts = () => livres().filter((x) => x.querySelector("button")?.getAttribute("aria-expanded") === "true").length;
+  verifier("les livres sont repliés", livres().length > 0 && ouverts() === 0, livres().length + " livres");
+  livres()[1]?.querySelector("button").click(); await a.dormir(460);
+  verifier("un livre s'ouvre", ouverts() === 1);
+  livres()[4]?.querySelector("button").click(); await a.dormir(440);
+  verifier("un seul à la fois", ouverts() === 1, ouverts() + " ouverts");
+  a.sousOnglet("Lectures").click(); await a.dormir(440);
+  verifier("refermé au clic ailleurs", ouverts() === 0);
+  const erreurs = a.erreurs;
+  a.dom.window.close();
+  return erreurs;
+}
+
 /* ── 7. Journal : encodage et export ──────────────────────────────────────── */
 async function journal() {
   console.log("\n7. JOURNAL");
@@ -319,6 +362,9 @@ async function journal() {
   a.boutons().find((x) => x.textContent.includes("Enregistrer la session")).click(); await a.dormir(520);
   const n = JSON.parse(a.w.localStorage.getItem("big-jack-theory")).sessions.length;
   verifier("une session s'enregistre", n === 3, n + " sessions");
+  /* L'heure passe par deux menus depuis la 1.46.14 : le sélecteur natif
+     ouvrait une fenêtre dont le bouton sortait de l'écran. */
+  verifier("pas de sélecteur d'heure natif", !a.d.querySelector("#racine input[type=time]"));
   a.boutons().find((x) => /Exporter en CSV/i.test(x.textContent))?.click(); await a.dormir(450);
   verifier("l'export CSV produit un fichier", !!telecharge, String(telecharge));
 
@@ -343,6 +389,42 @@ async function journal() {
   }
   a.dom.window.close();
   return a.erreurs;
+}
+
+/* ── 7 bis. L'alerte de perte ─────────────────────────────────────────────── */
+/* Elle touche à l'argent réellement engagé : elle doit être visible d'emblée,
+   dans les deux onglets du journal, et non enfouie dans l'analyse. */
+async function alertePerte() {
+  console.log("\n7 bis. ALERTE DE PERTE");
+  const cas = [
+    ["sous le plafond", [{ id: 1, date: jour(1), depot: 100, retrait: 40, lieu: "A" }], "var(--or)"],
+    ["plafond dépassé", [{ id: 1, date: jour(1), depot: 300, retrait: 0, lieu: "A" }], "var(--rouge)"],
+    ["aucune perte", [{ id: 1, date: jour(1), depot: 100, retrait: 180, lieu: "A" }], null],
+  ];
+  let erreurs = [];
+  for (const [nom, sessions, fond] of cas) {
+    const a = lancer({ donnees: { sessions, defauts: { plafondPerte: 200, periodePlafond: "semaine" } } });
+    await a.dormir(1100);
+    a.parTexte("Journal").click(); await a.dormir(600);
+    const al = a.d.querySelector("#racine [role=alert]");
+    /* La teinte est un fond très pâle mêlé au papier, avec le texte dans la
+       même famille : ni aplat criard, ni simple filet. */
+    verifier(nom, fond ? (al?.style.background ?? "").includes(fond) : !al, al ? al.style.background : "aucune");
+    if (fond) {
+      /* Repliée par défaut : l'essentiel tient sur une ligne, la jauge attend
+         qu'on la demande. */
+      const tete = al.querySelector("button");
+      verifier("  repliée au départ", tete?.getAttribute("aria-expanded") === "false");
+      tete?.click(); await a.dormir(430);
+      const jauge = al.querySelector('div[style*="999px"]');
+      verifier("  la jauge apparaît", !!jauge?.children[0]?.style.width, jauge?.children[0]?.style.width);
+      a.sousOnglet("Sessions")?.click(); await a.dormir(460);
+      verifier("  visible aussi dans Sessions", !!a.d.querySelector("#racine [role=alert]"));
+    }
+    erreurs = erreurs.concat(a.erreurs);
+    a.dom.window.close();
+  }
+  return erreurs;
 }
 
 /* ── 8. Le compteur ───────────────────────────────────────────────────────── */
@@ -417,7 +499,7 @@ async function sauvegarde() {
 
 /* ── Exécution ────────────────────────────────────────────────────────────── */
 const toutes = [];
-for (const suite of [ecrans, parametres, retour, ongletsJournal, pageMere, exercices, strategie, apparence, journal, compteur, sabot, sauvegarde]) {
+for (const suite of [ecrans, parametres, retour, ongletsJournal, pageMere, exercices, strategie, apparence, lectures, journal, alertePerte, compteur, sabot, sauvegarde]) {
   const e = await suite();
   if (e?.length) toutes.push(...e);
 }

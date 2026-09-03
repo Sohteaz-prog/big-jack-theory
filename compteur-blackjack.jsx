@@ -3,7 +3,7 @@ import { THEMES } from "./src/themes.js";
 import { LEXIQUE } from "./src/lexique.js";
 import { LECTURES, SITES } from "./src/lectures.js";
 import { CUMUL, MISEURS, PALIERS, RESULTATS, arrondirUnite, mainsTenables, simulerSeances, tirerMain, unitesRequises } from "./src/mises.js";
-import { EST_STRATEGIE, EST_THEORIE, GROUPE_STRATEGIE, GROUPE_THEORIE, HAUTEUR_SOUSNAV, JALONS, PAGE_MERE, RETOUR, consommerRetour, enregistrerChemin, groupeDe, poserEtape, poserRetour , GROUPE_JOURNAL, EST_JOURNAL} from "./src/navigation.js";
+import { EST_STRATEGIE, EST_THEORIE, GROUPE_STRATEGIE, GROUPE_THEORIE, HAUTEUR_SOUSNAV, JALONS, PAGE_MERE, RETOUR, consommerRetour, enregistrerChemin, groupeDe, poserEtape, poserRetour , GROUPE_JOURNAL, EST_JOURNAL, GARNIR} from "./src/navigation.js";
 import { CLE_INSTANTANE, CLE_SECOURS, CLE_STOCKAGE, JOURS_RAPPEL_SAUVEGARDE, ageSauvegarde, analyserSauvegarde, dateLisible, ecrireInstantane, ecrireStockage, effacerInstantane, empreinte, exporterTout, lireInstantane, lireStockage, sauvegardeAgee, telecharger } from "./src/stockage.js";
 import { ENSEIGNES, RANGS, cle, fmt, sabotNeuf, valeurCarte } from "./src/cartes.js";
 import { DATE_VERSION, VERSION } from "./src/version.js";
@@ -234,9 +234,17 @@ const CSS = `
   font-family:'Public Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
   color:var(--encre); background:var(--papier); min-height:100vh;
   -webkit-font-smoothing:antialiased; -webkit-tap-highlight-color:transparent;
-  transition:background-color .2s ease, color .2s ease;
 }
 .bjc *, .bjc *::before, .bjc *::after { box-sizing:border-box; }
+/* Le changement de thème touche tout en même temps. Seul le conteneur était
+   animé : le fond glissait pendant que panneaux, filets et textes basculaient
+   d'un coup, et l'écran se décomposait le temps de la bascule. La transition
+   porte sur les quatre propriétés qui changent de teinte, et sur rien d'autre
+   — surtout pas « all », qui animerait aussi les tailles et les positions. */
+.bjc, .bjc *, .bjc *::before, .bjc *::after {
+  transition:background-color .18s ease, color .18s ease, border-color .18s ease, fill .18s ease;
+}
+.bjc .bjc-tap { transition:transform .08s ease, background-color .18s ease, color .18s ease; }
 .bjc h1,.bjc h2,.bjc h3 { font-family:'Source Serif 4', Georgia, serif; margin:0; letter-spacing:-.008em; }
 .bjc .mono { font-family:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums; }
 .bjc button { font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; touch-action:manipulation; }
@@ -692,12 +700,38 @@ function VueMenu({ systemeId, setSysteme, allerA, mobile, wrap }) {
           Systèmes de comptage
         </h1>
         <p style={{ fontSize: mobile ? 15 : 16.5, lineHeight: 1.62, color: "var(--encre2)", margin: 0 }}>
-          Trois jauges mesurent chaque système, d'après les simulations publiées.{" "}
-          <b style={{ color: "var(--encre)" }}>Mise</b> (CM) dit s'il sait quand miser gros,{" "}
-          <b style={{ color: "var(--encre)" }}>Jeu</b> (EJ) quand dévier du tableau,{" "}
-          <b style={{ color: "var(--encre)" }}>Assurance</b> (CA) quand assurer. Plus la barre est longue, mieux c'est —
-          mais un système précis se compte plus difficilement. Le bouton « i » donne le résumé, la carte ouvre la fiche.
+          Trois jauges mesurent chaque système, d'après les simulations publiées. Plus la barre est longue, mieux
+          c'est — mais un système précis se compte plus difficilement.
         </p>
+
+        {/* Les trois sigles, chacun sur sa ligne : enchaînés dans une phrase,
+            on lisait l'abréviation sans jamais rencontrer ce qu'elle abrège. */}
+        <div style={{ display: "grid", gap: 5, marginTop: 12 }}>
+          {[
+            ["CM", "corrélation de mise", "savoir quand miser gros"],
+            ["EJ", "efficacité de jeu", "savoir quand s'écarter du tableau"],
+            ["CA", "corrélation d'assurance", "savoir quand assurer"],
+          ].map(([sigle, nom, quoi]) => (
+            <div key={sigle} style={{ display: "flex", alignItems: "baseline", gap: 8, fontSize: 13.5, lineHeight: 1.5 }}>
+              <span
+                className="mono"
+                style={{
+                  fontWeight: 700,
+                  fontSize: 11,
+                  letterSpacing: ".06em",
+                  color: "var(--encre)",
+                  width: 24,
+                  flexShrink: 0,
+                }}
+              >
+                {sigle}
+              </span>
+              <span style={{ color: "var(--encre2)" }}>
+                <b style={{ color: "var(--encre)", fontWeight: 700 }}>{nom}</b> — {quoi}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Aide au choix, repliée : elle arrivait en bas de page, après les neuf
@@ -738,6 +772,9 @@ function VueMenu({ systemeId, setSysteme, allerA, mobile, wrap }) {
             <button
               key={id}
               onClick={() => {
+                /* On arrive en haut de la fiche, pas à la hauteur qu'on avait
+                   dans la liste. */
+                window.scrollTo(0, 0);
                 setSysteme(id);
                 allerA("fiche");
               }}
@@ -1047,6 +1084,17 @@ function Liste({ items, marque, signe }) {
 }
 
 function VueFiche({ sys, allerA, mobile, wrap, reglages }) {
+  const [triIndices, setTriIndices] = useState("valeur");
+  /* Par seuil : du plus bas au plus haut, l'ordre où l'on rencontre les
+     déviations quand le compte monte. Le tri est stable, l'ordre par valeur
+     départage deux seuils égaux. */
+  const indicesTries = (() => {
+    const l = sys.indices ?? [];
+    if (triIndices !== "seuil") return l;
+    /* « −1 » utilise le signe moins typographique, que parseFloat ignore. */
+    const nb = (x) => parseFloat(String(x).replace(",", ".").replace("+", "").replace("−", "-")) || 0;
+    return [...l].sort((a, b) => nb(a[3]) - nb(b[3]) || l.indexOf(a) - l.indexOf(b));
+  })();
   return (
     <div style={wrap}>
       <div style={{ padding: mobile ? "22px 0 18px" : "44px 0 20px" }}>
@@ -1129,10 +1177,10 @@ function VueFiche({ sys, allerA, mobile, wrap, reglages }) {
           ))}
         </div>
 
+        {/* Une ligne suffit : la liste des systèmes définit déjà les trois
+            corrélations, on n'y revient pas ici. */}
         <p style={{ fontSize: 12.5, lineHeight: 1.6, color: "var(--encre2)", margin: "10px 0 0" }}>
-          Les trois premiers sont des corrélations, de 0 à 1. <b>Mise</b> : le compte prédit-il bien l'avantage, donc
-          le moment de miser gros. <b>Jeu</b> : aide-t-il à décider des mains. <b>Assurance</b> : repère-t-il les
-          sabots où l'assurance devient rentable.
+          Les trois premiers sont des corrélations, de 0 à 1 — plus c'est proche de 1, mieux c'est.
         </p>
       </div>
 
@@ -1202,8 +1250,24 @@ function VueFiche({ sys, allerA, mobile, wrap, reglages }) {
                 pèse environ un tiers du gain, et les trois premiers près de 60 %. Lisez chaque ligne ainsi : dès que le
                 vrai compte atteint l'indice, vous remplacez le jeu de base par la déviation.
               </p>
+              {/* Deux lectures : par valeur pour apprendre — les premiers
+                  rapportent le plus — ou par seuil pour jouer, puisqu'on suit
+                  le vrai compte qui monte. */}
+              {/* Sans « plein » : les deux choix gardent leur largeur propre et
+                  tiennent à côté de l'étiquette, sur une seule ligne. */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "0 0 8px", flexWrap: "nowrap" }}>
+                <span style={{ ...S.eyebrow, fontSize: 9.5, color: "var(--encre2)", flexShrink: 0 }}>Trier</span>
+                <Segments
+                  options={[
+                    { v: "valeur", l: "Valeur" },
+                    { v: "seuil", l: "Seuil" },
+                  ]}
+                  valeur={triIndices}
+                  onChange={setTriIndices}
+                />
+              </div>
               <div style={{ ...S.panneau, padding: "2px 0" }}>
-                {sys.indices.map(([main, base, dev, seuil], i) => (
+                {indicesTries.map(([main, base, dev, seuil], i) => (
                   <div
                     key={i}
                     style={{
@@ -1212,7 +1276,7 @@ function VueFiche({ sys, allerA, mobile, wrap, reglages }) {
                       alignItems: "baseline",
                       gap: 10,
                       padding: "9px 13px",
-                      borderBottom: i < sys.indices.length - 1 ? "1px solid var(--regle)" : "none",
+                      borderBottom: i < indicesTries.length - 1 ? "1px solid var(--regle)" : "none",
                       fontSize: 14,
                     }}
                   >
@@ -1292,6 +1356,27 @@ const gainsPour = (paquets) => {
 /* Le chiffre reste toujours en encre pleine — un chiffre coloré sur fond
    d'instrument plafonne à 4,5:1 de contraste. La couleur descend ici, dans un
    cartouche à fond plein, où elle est lue sans être déchiffrée. */
+/* Chevron d'ouverture, commun à tous les panneaux qui se déplient. Un « + »
+   laissait attendre un ajout ; le chevron dit que ça se déroule. */
+function Chevron({ ouvert, taille = 11 }) {
+  return (
+    <svg
+      width={taille}
+      height={Math.round(taille * 0.64)}
+      viewBox="0 0 12 8"
+      aria-hidden="true"
+      style={{
+        flexShrink: 0,
+        display: "block",
+        transform: ouvert ? "rotate(180deg)" : "none",
+        transition: "transform .15s ease",
+      }}
+    >
+      <path d="M1 1.5 L6 6.5 L11 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function Cartouche({ mot, fond }) {
   if (!mot) return null;
   return (
@@ -1752,13 +1837,15 @@ function VueCompteur({ sys, nbPaquets, setNbPaquets, historique, setHistorique, 
             }}
           />
           <div
+            title="Cible : 75 %"
             style={{
               position: "absolute",
               top: 0,
               bottom: 0,
               left: "75%",
               width: 2,
-              background: "var(--encre)",
+              /* Doré : c'est un seuil, pas une graduation. */
+              background: "var(--or)",
             }}
           />
         </div>
@@ -1768,10 +1855,11 @@ function VueCompteur({ sys, nbPaquets, setNbPaquets, historique, setHistorique, 
           <span className="mono" style={{ fontSize: 15, fontWeight: 700, color: qualitePen.couleur }}>
             {coupeConnue ? `${penetration.toFixed(0)} %` : "—"}
           </span>
+          {/* Le qualificatif situe déjà la valeur par rapport à la cible :
+              « excellente » veut dire au-delà de 75 %. Répéter le seuil en
+              chiffres mettait deux pourcentages côte à côte, qu'on
+              confondait. Le cran doré porte la cible en infobulle. */}
           <span style={{ fontSize: 12.5, color: qualitePen.couleur }}>{qualitePen.mot}</span>
-          <span style={{ fontSize: 13, color: "var(--encre2)" }}>
-            cible 75 % — au-delà, le comptage rapporte vraiment.
-          </span>
         </span>
       </div>
 
@@ -1785,7 +1873,7 @@ function VueCompteur({ sys, nbPaquets, setNbPaquets, historique, setHistorique, 
               aria-expanded={gainsOuverts}
               style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, textAlign: "left" }}
             >
-              <span style={S.eyebrow}>Ce que rapporte la pénétration — {g.paquets} paquets</span>
+              <span style={S.eyebrow}>Gain selon la pénétration · {g.paquets} paquets</span>
               <span className="mono" aria-hidden="true" style={{ fontSize: 15, color: "var(--encre2)", flexShrink: 0 }}>
                 {gainsOuverts ? "−" : "+"}
               </span>
@@ -2069,8 +2157,16 @@ const styleChamp = {
 };
 
 /** Renvoi vers la fiche du système, depuis un exercice. */
-function BilanSerie({ mobile, score, seuil, titre, lignes, conseil, recommencer }) {
+function BilanSerie({ mobile, score, seuil, titre, lignes, conseil, recommencer, auMenu, recap }) {
   const reussite = score.total ? Math.round((score.bon / score.total) * 100) : 0;
+  /* Le récapitulatif des mains ratées est replié : on regarde d'abord son
+     score, on révise ensuite si on le veut. */
+  const [recapVu, setRecapVu] = useState(false);
+  /* La série est finie : plus rien n'est en cours, et quitter ne doit plus
+     demander confirmation. */
+  useEffect(() => {
+    SERIE.engagee = false;
+  }, []);
   return (
     <div style={{ ...S.panneau, padding: mobile ? "26px 18px" : "38px 26px", textAlign: "center" }}>
       <div style={{ ...S.eyebrow, marginBottom: 8 }}>{titre}</div>
@@ -2101,13 +2197,92 @@ function BilanSerie({ mobile, score, seuil, titre, lignes, conseil, recommencer 
         </p>
       )}
 
-      <button
-        onClick={recommencer}
-        className="bjc-tap"
-        style={{ background: "var(--encre)", color: "var(--panneau)", padding: "13px 30px", borderRadius: 3, fontWeight: 700, fontSize: 15 }}
-      >
-        Refaire une série
-      </button>
+      {recap && recap.length > 0 && (
+        <div style={{ marginBottom: 18, textAlign: "left" }}>
+          <button
+            onClick={() => setRecapVu((o) => !o)}
+            aria-expanded={recapVu}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              padding: "10px 12px",
+              border: "1px solid var(--regle)",
+              borderRadius: 3,
+              fontSize: 13.5,
+              fontWeight: 700,
+              color: "var(--encre2)",
+            }}
+          >
+            {recap.length} main{recap.length > 1 ? "s" : ""} à revoir
+            <span style={{ display: "flex" }}>
+              <Chevron ouvert={recapVu} />
+            </span>
+          </button>
+          {recapVu && (
+            <div className="bjc-pop" style={{ display: "grid", gap: 3, marginTop: 8 }}>
+              {recap.map((e) => (
+                <div
+                  key={e.cle}
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    gap: 10,
+                    padding: "7px 9px",
+                    borderRadius: 2,
+                    background: "var(--survol)",
+                  }}
+                >
+                  <span style={{ flex: 1, fontSize: 13.5, minWidth: 0 }}>{e.texte}</span>
+                  {e.n > 1 && (
+                    <span className="mono" style={{ fontSize: 11.5, color: "var(--encre2)", flexShrink: 0 }}>
+                      ×{e.n}
+                    </span>
+                  )}
+                  {e.note && (
+                    <span
+                      className="mono"
+                      style={{ fontSize: 12.5, fontWeight: 700, color: "var(--rouge)", flexShrink: 0 }}
+                    >
+                      {e.note}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+        <button
+          onClick={recommencer}
+          className="bjc-tap"
+          style={{ background: "var(--encre)", color: "var(--panneau)", padding: "13px 26px", borderRadius: 3, fontWeight: 700, fontSize: 15 }}
+        >
+          Refaire une série
+        </button>
+        {/* Retour au menu de l'exercice : c'est là que se changent la longueur
+            de la série et les réglages, et l'on n'y accédait qu'en quittant. */}
+        {auMenu && (
+          <button
+            onClick={auMenu}
+            className="bjc-tap"
+            style={{
+              border: "1px solid var(--regle)",
+              padding: "13px 26px",
+              borderRadius: 3,
+              fontWeight: 700,
+              fontSize: 15,
+              color: "var(--encre2)",
+            }}
+          >
+            Réglages
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -2290,6 +2465,8 @@ function DrillStrategie({ mobile, reglages, majReglage, noter, noterBilan, aller
   const [score, setScore] = useState({ bon: 0, total: 0, serie: 0, record: 0 });
   const [erreurs, setErreurs] = useState([]);
   const [longueur, setLongueur] = useState(50);
+  /* Série close : la déclaration avait disparu lors d'un déplacement, et
+     l'exercice ne se montait plus. */
   const [fini, setFini] = useState(false);
   const [commence, setCommence] = useState(false);
   const t0 = useRef(0);
@@ -2311,6 +2488,9 @@ function DrillStrategie({ mobile, reglages, majReglage, noter, noterBilan, aller
 
   useEffect(() => { tirer(); }, [tirer]);
 
+  /* L'ordre des tables en ligne : tirer à gauche, puis rester, doubler,
+     séparer. L'abandon ferme la marche — c'est le geste le plus rare, et il
+     n'existe pas sur toutes les tables. */
   const options = [
     { c: "T", l: "Tirer" },
     { c: "R", l: "Rester" },
@@ -2381,6 +2561,14 @@ function DrillStrategie({ mobile, reglages, majReglage, noter, noterBilan, aller
         seuil={98}
         titre="Série terminée"
         lignes={[["Meilleure série", String(score.record)], ["Situations ratées", String(erreurs.length)]]}
+        recap={[...erreurs]
+          .sort((x, y) => y.cout * y.n - x.cout * x.n)
+          .map((e) => ({
+            cle: e.cle,
+            n: e.n,
+            texte: `${e.main} contre ${e.hauteur} — ${nomAction(e.attendu).toLowerCase()}`,
+            note: pct(-e.cout),
+          }))}
         conseil={
           score.total && score.bon / score.total >= 0.98
             ? "Au-dessus de 98 %. C'est le niveau attendu avant de jouer en conditions réelles."
@@ -2389,6 +2577,7 @@ function DrillStrategie({ mobile, reglages, majReglage, noter, noterBilan, aller
             : "Continuez : le tableau ne s'apprend pas en une série."
         }
         recommencer={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setFini(false); tirer(); }}
+        auMenu={() => { setFini(false); setCommence(false); }}
       />
     );
   }
@@ -2433,7 +2622,7 @@ function DrillStrategie({ mobile, reglages, majReglage, noter, noterBilan, aller
             </label>
           </>
         }
-        onCommencer={() => setCommence(true)}
+        onCommencer={() => { window.scrollTo(0, 0); setCommence(true); }}
       />
     );
   }
@@ -2478,24 +2667,51 @@ function DrillStrategie({ mobile, reglages, majReglage, noter, noterBilan, aller
                 maxWidth: 520,
               }}
             >
-              {options.map((o) => (
-                <button
-                  key={o.c}
-                  onClick={() => repondre(o.c)}
-                  className="bjc-tap"
-                  style={{
-                    minHeight: 54,
-                    fontSize: mobile ? 13.5 : 15,
-                    fontWeight: 700,
-                    border: "1px solid var(--encre)",
-                    borderRadius: 3,
-                    background: "var(--panneau)",
-                  }}
-                >
-                  {o.l}
-                </button>
-              ))}
+              {options
+                .filter((o) => o.c !== "A")
+                .map((o) => (
+                  <button
+                    key={o.c}
+                    onClick={() => repondre(o.c)}
+                    className="bjc-tap"
+                    style={{
+                      minHeight: 54,
+                      fontSize: mobile ? 13.5 : 15,
+                      fontWeight: 700,
+                      border: "1px solid var(--encre)",
+                      borderRadius: 3,
+                      background: "var(--panneau)",
+                    }}
+                  >
+                    {o.l}
+                  </button>
+                ))}
             </div>
+
+            {/* L'abandon sur sa propre rangée, pleine largeur. Mêlé aux autres,
+                il tombait seul en début de seconde ligne sur téléphone, et
+                l'ordre des tables en ligne — tirer à gauche, séparer à droite —
+                ne se lisait plus. */}
+            {options.some((o) => o.c === "A") && (
+              <button
+                onClick={() => repondre("A")}
+                className="bjc-tap"
+                style={{
+                  minHeight: 46,
+                  width: "100%",
+                  maxWidth: 520,
+                  marginTop: 8,
+                  fontSize: mobile ? 13 : 14.5,
+                  fontWeight: 700,
+                  border: "1px solid var(--regle)",
+                  borderRadius: 3,
+                  background: "var(--panneau)",
+                  color: "var(--encre2)",
+                }}
+              >
+                Abandonner
+              </button>
+            )}
 
             <div style={{ minHeight: 54, textAlign: "center", width: "100%" }}>
               {retour && (
@@ -2654,7 +2870,8 @@ function DrillIndices({ sys, mobile, noter, noterBilan, sons, jeuSons, allerTheo
             ? "Les seuils sont acquis. Rappelez-vous qu'ils valent pour le Hi-Lo en six paquets et se décalent selon les règles."
             : "Les indices ne se devinent pas : ils se mémorisent. Reprenez la liste dans la fiche du système avant de recommencer."
         }
-        recommencer={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setFini(false); tirer(); }}
+        recommencer={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setFini(false); setDerniere(false); tirer(); }}
+        auMenu={() => { setFini(false); setDerniere(false); setCommence(false); }}
       />
     );
   }
@@ -2683,7 +2900,7 @@ function DrillIndices({ sys, mobile, noter, noterBilan, sons, jeuSons, allerTheo
             actif={score.total > 0}
           />
         }
-        onCommencer={() => setCommence(true)}
+        onCommencer={() => { window.scrollTo(0, 0); setCommence(true); }}
       />
     );
   }
@@ -2784,7 +3001,10 @@ function DrillValeur({ sys, mobile, noter, noterBilan, sons, jeuSons, allerTheor
   const valeursPossibles = useMemo(() => {
     const s = new Set(Object.values(sys.valeurs));
     if (sys.valeurSpeciale) { s.add(sys.valeurSpeciale.rouge); s.add(sys.valeurSpeciale.noir); }
-    return [...s].sort((a, b) => b - a);
+    /* Croissant, comme le clavier du compteur : les négatifs à gauche, les
+       positifs à droite. Deux ordres différents pour le même geste faisaient
+       hésiter. */
+    return [...s].sort((a, b) => a - b);
   }, [sys]);
 
   const repondre = (v) => {
@@ -2811,6 +3031,8 @@ function DrillValeur({ sys, mobile, noter, noterBilan, sons, jeuSons, allerTheor
   // Le bilan est enregistré une fois la série close.
   const bilanEnvoye = useRef(false);
   useEffect(() => {
+    /* Défilé terminé : plus rien n'est en cours, quitter ne demande plus rien. */
+    if (demarre === "fini") SERIE.engagee = false;
     if (demarre === "fini" && !bilanEnvoye.current && score.total > 0) {
       bilanEnvoye.current = true;
       noterBilan && noterBilan({ type: "valeur", total: score.total, bon: score.bon, record: score.record ?? 0, temps: temps.length ? temps.reduce((a, b) => a + b, 0) / temps.length : null });
@@ -2856,13 +3078,22 @@ function DrillValeur({ sys, mobile, noter, noterBilan, sons, jeuSons, allerTheor
             : "Travaillez la justesse avant la vitesse : une valeur fausse coûte plus qu'une réponse lente."}
         </p>
 
-        <button
-          onClick={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setTemps([]); setDemarre(true); }}
-          className="bjc-tap"
-          style={{ background: "var(--encre)", color: "var(--panneau)", padding: "13px 30px", borderRadius: 3, fontWeight: 700, fontSize: 15 }}
-        >
-          Refaire une série
-        </button>
+        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+          <button
+            onClick={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setTemps([]); setDemarre(true); }}
+            className="bjc-tap"
+            style={{ background: "var(--encre)", color: "var(--panneau)", padding: "13px 26px", borderRadius: 3, fontWeight: 700, fontSize: 15 }}
+          >
+            Refaire une série
+          </button>
+          <button
+            onClick={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setTemps([]); setDemarre(false); }}
+            className="bjc-tap"
+            style={{ border: "1px solid var(--regle)", padding: "13px 26px", borderRadius: 3, fontWeight: 700, fontSize: 15, color: "var(--encre2)" }}
+          >
+            Réglages
+          </button>
+        </div>
       </div>
     );
   }
@@ -2886,6 +3117,9 @@ function DrillValeur({ sys, mobile, noter, noterBilan, sons, jeuSons, allerTheor
           </label>
         }
         onCommencer={() => {
+          /* Comme les autres exercices : on arrive en haut, l'exercice occupe
+             l'écran. */
+          window.scrollTo(0, 0);
           contexte();
           setScore({ bon: 0, total: 0, serie: 0, record: 0 });
           setTemps([]);
@@ -3013,6 +3247,7 @@ function DrillSabot({ sys, mobile, noter, noterBilan, sons, jeuSons, tic, allerT
   const pas = paires ? 2 : 1;
 
   const lancer = () => {
+    window.scrollTo(0, 0);
     setPile(sabotNeuf(nbPaquets).slice(0, taille));
     setIdx(0);
     setResultat(null);
@@ -3096,6 +3331,12 @@ function DrillSabot({ sys, mobile, noter, noterBilan, sons, jeuSons, tic, allerT
                   <option value={330}>Table réelle</option>
                   <option value={200}>Extrême</option>
                 </select>
+                {/* Le repère chiffré sous le sélecteur : « Rapide » ne dit rien
+                    tant qu'on ne sait pas à quelle cadence cela correspond. Il
+                    était enfoui dans le panneau des détails. */}
+                <div className="mono" style={{ fontSize: 11.5, color: "var(--encre2)", marginTop: 4 }}>
+                  {(vitesse / 1000).toFixed(2).replace(".", ",")} s · {Math.round(60000 / vitesse)} cartes/min
+                </div>
               </label>
               <label style={{ gridColumn: "1 / -1" }}>
                 <div style={{ ...S.eyebrow, marginBottom: 5 }}>Affichage</div>
@@ -3301,6 +3542,9 @@ function DrillVraiCompte({ sys, mobile, noter, noterBilan, sons, jeuSons, allerT
   const [score, setScore] = useState({ bon: 0, total: 0, serie: 0, record: 0 });
   const [longueur, setLongueur] = useState(20);
   const [fini, setFini] = useState(false);
+  /* Marque la dernière réponse d'une série : le bouton mène alors au bilan
+     plutôt qu'à une carte de plus. */
+  const [derniere, setDerniere] = useState(false);
   const [commence, setCommence] = useState(false);
 
   const tirer = useCallback(() => {
@@ -3360,7 +3604,8 @@ function DrillVraiCompte({ sys, mobile, noter, noterBilan, sons, jeuSons, allerT
             : "Rappel : on divise par les paquets restants dans le sabot, cartes derrière la carte de coupe comprises. Une estimation au demi-paquet près suffit."
         }
         lignes={[["Meilleure série", String(score.record)]]}
-        recommencer={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setFini(false); tirer(); }}
+        recommencer={() => { setScore({ bon: 0, total: 0, serie: 0, record: 0 }); setFini(false); setDerniere(false); tirer(); }}
+        auMenu={() => { setFini(false); setDerniere(false); setCommence(false); }}
       />
     );
   }
@@ -3401,7 +3646,7 @@ function DrillVraiCompte({ sys, mobile, noter, noterBilan, sons, jeuSons, allerT
             actif={score.total > 0}
           />
         }
-        onCommencer={() => setCommence(true)}
+        onCommencer={() => { window.scrollTo(0, 0); setCommence(true); }}
       />
     );
   }
@@ -3445,7 +3690,10 @@ function DrillVraiCompte({ sys, mobile, noter, noterBilan, sons, jeuSons, allerT
                       record: Math.max(s.record, serie),
                     };
                   });
-                  if (longueur && score.total + 1 >= longueur) setTimeout(() => setFini(true), 1800);
+                  /* Dernière réponse : on marque la série close tout de suite.
+                     Le délai laissait le temps d'appuyer sur « Suivante », et
+                     une question s'affichait avant l'écran de fin. */
+                  if (longueur && score.total + 1 >= longueur) setDerniere(true);
                 }}
                 className="mono bjc-tap"
                 style={{
@@ -3472,7 +3720,7 @@ function DrillVraiCompte({ sys, mobile, noter, noterBilan, sons, jeuSons, allerT
               {fmt(q.rc)} ÷ {String(q.restant).replace(".", ",")} = {fmt(q.tc)}
             </div>
             <button
-              onClick={tirer}
+              onClick={() => (derniere ? setFini(true) : tirer())}
               className="bjc-tap"
               style={{
                 marginTop: 16,
@@ -3485,7 +3733,7 @@ function DrillVraiCompte({ sys, mobile, noter, noterBilan, sons, jeuSons, allerT
                 fontSize: 14,
               }}
             >
-              Suivante
+              {derniere ? "Voir le bilan" : "Suivante"}
             </button>
           </div>
         )}
@@ -3599,6 +3847,7 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
   const actif = modes.find((m) => m.v === mode);
   const [confirmation, setConfirmation] = useState(false);
   const [ouvertHistorique, setOuvertHistorique] = useState(false);
+  const [revoirVu, setRevoirVu] = useState(false);
   const [filtreExo, setFiltreExo] = useState("tous");
   const [redemarrage, setRedemarrage] = useState(0);
   const [confirmeBilans, setConfirmeBilans] = useState(false);
@@ -3617,6 +3866,15 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
   const pret = criteres.every((c) => c.atteint);
   const maitrisees = Object.values(entr?.strategie?.maitrise ?? {}).filter((m) => m.n >= 3 && m.bon === m.n).length;
   const vues = Object.keys(entr?.strategie?.maitrise ?? {}).length;
+
+  /* Les situations les plus ratées, toutes séries confondues. Le bilan de fin
+     de série ne montre que la série qui vient de finir ; celle-ci se souvient
+     de tout, et c'est elle qui dit quoi réviser. */
+  const aRevoir = Object.entries(entr?.strategie?.maitrise ?? {})
+    .map(([cle, m]) => ({ cle, ratees: m.n - m.bon, n: m.n }))
+    .filter((x) => x.ratees > 0)
+    .sort((x, y) => y.ratees - x.ratees || y.n - x.n)
+    .slice(0, 10);
 
   if (!actif) {
     return (
@@ -3731,27 +3989,6 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
           </p>
         </div>
 
-        {vues > 0 && (
-          <div style={{ ...S.panneau, padding: mobile ? "14px 15px" : "16px 18px", marginBottom: 14 }}>
-            <div style={{ ...S.eyebrow, marginBottom: 8 }}>Maîtrise des situations</div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-              <span className="mono" style={{ fontSize: 24, fontWeight: 700, color: "var(--ok)" }}>
-                {maitrisees}
-              </span>
-              <span style={{ fontSize: 14, color: "var(--encre2)" }}>
-                situation{maitrisees > 1 ? "s" : ""} maîtrisée{maitrisees > 1 ? "s" : ""} sur {vues} rencontrée
-                {vues > 1 ? "s" : ""}
-              </span>
-            </div>
-            <div style={{ height: 6, borderRadius: 999, background: "var(--regle)", marginTop: 9, overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${(maitrisees / vues) * 100}%`, background: "var(--ok)" }} />
-            </div>
-            <p style={{ fontSize: 12.5, lineHeight: 1.5, color: "var(--encre2)", margin: "10px 0 12px" }}>
-              Une situation est maîtrisée après trois rencontres sans erreur. Le tableau en compte 290 au total : ce
-              compteur ne monte qu'au fil de ce que vous croisez réellement.
-            </p>
-          </div>
-        )}
 
         <div style={{ display: "grid", gap: 10 }}>
           {modes.map((m, i) => (
@@ -3817,6 +4054,82 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
               </button>
             )}
           </div>
+
+          {/* La maîtrise des situations vit ici : elle mesure une progression,
+              et n'a rien à faire au-dessus de la liste des exercices, où elle
+              paraissait ne concerner que la stratégie de base. */}
+        {vues > 0 && (
+          <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--regle)" }}>
+            <div style={{ ...S.eyebrow, marginBottom: 8 }}>Maîtrise des situations</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+              <span className="mono" style={{ fontSize: 24, fontWeight: 700, color: "var(--ok)" }}>
+                {maitrisees}
+              </span>
+              <span style={{ fontSize: 14, color: "var(--encre2)" }}>
+                situation{maitrisees > 1 ? "s" : ""} maîtrisée{maitrisees > 1 ? "s" : ""} sur {vues} rencontrée
+                {vues > 1 ? "s" : ""}
+              </span>
+            </div>
+            <div style={{ height: 6, borderRadius: 999, background: "var(--regle)", marginTop: 9, overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${(maitrisees / vues) * 100}%`, background: "var(--ok)" }} />
+            </div>
+            <p style={{ fontSize: 12.5, lineHeight: 1.5, color: "var(--encre2)", margin: "10px 0 12px" }}>
+              Une situation est maîtrisée après trois rencontres sans erreur. Le tableau en compte 290 au total : ce
+              compteur ne monte qu'au fil de ce que vous croisez réellement.
+            </p>
+
+            {aRevoir.length > 0 && (
+              <>
+                <button
+                  onClick={() => setRevoirVu((o) => !o)}
+                  aria-expanded={revoirVu}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    padding: "9px 12px",
+                    border: "1px solid var(--regle)",
+                    borderRadius: 3,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    color: "var(--encre2)",
+                  }}
+                >
+                  {aRevoir.length} situation{aRevoir.length > 1 ? "s" : ""} à revoir
+                  <span style={{ display: "flex" }}>
+                    <Chevron ouvert={revoirVu} />
+                  </span>
+                </button>
+                {revoirVu && (
+                  <div className="bjc-pop" style={{ display: "grid", gap: 3, marginTop: 8 }}>
+                    {aRevoir.map((e) => (
+                      <div
+                        key={e.cle}
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: 10,
+                          padding: "7px 9px",
+                          borderRadius: 2,
+                          background: "var(--survol)",
+                        }}
+                      >
+                        <span style={{ flex: 1, fontSize: 13.5, minWidth: 0 }}>
+                          {e.cle.replace("|", " contre ")}
+                        </span>
+                        <span className="mono" style={{ fontSize: 12, color: "var(--rouge)", flexShrink: 0 }}>
+                          {e.ratees} raté{e.ratees > 1 ? "s" : ""} sur {e.n}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
           {bilans.length > 0 && (
             <select
@@ -3964,10 +4277,10 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
           <div style={{ borderTop: "1px solid var(--regle)", marginTop: 14, paddingTop: 12 }}>
           {!confirmation ? (
             <>
-              <p style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--encre2)", margin: "0 0 11px" }}>
-                Série, statistiques et maîtrise des situations sont conservées entre les séances. Les réinitialiser
-                repart de zéro et ne touche ni vos réglages ni votre journal.
-              </p>
+              {/* Le bouton seul : la phrase d'explication ressemblait à une
+                  description de section, et l'on ne voyait pas qu'elle
+                  annonçait une action destructrice. Elle a rejoint la
+                  confirmation, où elle est lue au bon moment. */}
               <button
                 onClick={() => setConfirmation(true)}
                 style={{
@@ -3990,6 +4303,9 @@ function VueEntrainement({ sys, mobile, wrap, reglages, majReglage, entr, noter,
                 {(entr?.valeur?.total ?? 0) > 1 ? "s" : ""}, {maitrisees} situation
                 {maitrisees > 1 ? "s" : ""} maîtrisée{maitrisees > 1 ? "s" : ""} et une série de {serie} jour
                 {serie > 1 ? "s" : ""}. C'est définitif.
+              </p>
+              <p style={{ fontSize: 13, lineHeight: 1.55, color: "var(--encre2)", margin: "0 0 11px" }}>
+                Vos réglages et votre journal de sessions ne sont pas touchés.
               </p>
               <div style={{ display: "flex", gap: 9, flexWrap: "wrap" }}>
                 <button
@@ -4244,6 +4560,7 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
   };
   const [reglagesVus, setReglagesVus] = useState(false);
   const [infoVue, setInfoVue] = useState(false);
+  const [infoAbandon, setInfoAbandon] = useState(false);
 
   const tables = useMemo(
     () => construireTables(h17, abandon, sansCarteCachee, paquets, das),
@@ -4396,6 +4713,60 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
           </button>
         </div>
       </div>
+
+      {infoAbandon && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Pourquoi si peu de cases"
+          onClick={() => setInfoAbandon(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99,
+            background: "rgba(0,0,0,.62)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+        >
+          <div
+            className="bjc-flash"
+            onClick={(e) => e.stopPropagation()}
+            style={{ ...S.panneau, maxWidth: 380, padding: mobile ? "20px 18px" : "24px 22px", boxShadow: "var(--ombre-forte)" }}
+          >
+            <h2 style={{ fontSize: mobile ? 17 : 19, margin: "0 0 10px", fontWeight: 700, letterSpacing: "-.008em" }}>
+              Pourquoi si peu de cases
+            </h2>
+            <p style={{ fontSize: 14.5, lineHeight: 1.6, color: "var(--encre2)", margin: 0 }}>
+              {h17 ? "Sept cases sur trois cents" : "Quatre cases sur trois cents"} : c'est normal. Abandonner ne se
+              justifie que là où votre perte espérée dépasse la moitié de la mise, ce qui est rare.
+            </p>
+            <p style={{ fontSize: 14.5, lineHeight: 1.6, color: "var(--encre2)", margin: "10px 0 18px" }}>
+              Beaucoup de tables ne proposent d'ailleurs pas l'abandon tardif — vérifiez avant de vous asseoir. Le gain
+              est faible mais réel : environ 0,07 %.
+            </p>
+            <button
+              onClick={() => setInfoAbandon(false)}
+              className="bjc-tap"
+              style={{
+                width: "100%",
+                background: "var(--encre)",
+                color: "var(--panneau)",
+                padding: "12px 18px",
+                borderRadius: 3,
+                fontWeight: 700,
+                fontSize: 14,
+                textTransform: "uppercase",
+                letterSpacing: ".08em",
+              }}
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
 
       {infoVue && (
         <div
@@ -4721,7 +5092,30 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
             borderLeft: "3px solid var(--encre)",
           }}
         >
-          <div style={{ ...S.eyebrow, marginBottom: 10 }}>Quand abandonner — la liste complète</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+            <span style={{ ...S.eyebrow, flex: 1 }}>Quand abandonner — la liste complète</span>
+            {/* La remarque sur la rareté de l'abandon se lit une fois : elle
+                passe en fenêtre, comme celle du tableau. */}
+            <button
+              onClick={() => setInfoAbandon(true)}
+              aria-label="Pourquoi si peu de cases"
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                flexShrink: 0,
+                border: "1px solid var(--regle)",
+                background: "transparent",
+                color: "var(--encre2)",
+                fontSize: 13,
+                fontWeight: 700,
+                fontStyle: "italic",
+                lineHeight: 1,
+              }}
+            >
+              i
+            </button>
+          </div>
           <div style={{ display: "grid", gap: 7 }}>
             {[
               ["16 contre 9, 10 ou As", "sauf 8,8 — une paire de 8 se sépare, elle ne s'abandonne pas"],
@@ -4756,12 +5150,6 @@ function VueStrategie({ mobile, wrap, hauteurEntete, hauteurSousNav, reglages, m
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 13.5, lineHeight: 1.6, color: "var(--encre2)", margin: "14px 0 0" }}>
-            {h17 ? "Sept cases sur trois cents" : "Quatre cases sur trois cents"} : c'est normal. Abandonner ne se
-            justifie que là où votre perte espérée dépasse la moitié de la mise, ce qui est rare. Beaucoup de tables ne
-            proposent d'ailleurs pas l'abandon tardif — vérifiez avant de vous asseoir, le gain est faible mais réel
-            (environ 0,07 %).
-          </p>
         </div>
       )}
 
@@ -5758,12 +6146,59 @@ function ChampNombre({ valeur, onChange, min = 0, style }) {
   );
 }
 
-function LigneReglage({ mobile, titre, aide, children }) {
+/* Heure en un seul champ. Le sélecteur natif « time » ouvre une fenêtre que la
+   page ne contrôle pas — son bouton de validation sortait de l'écran. Deux
+   menus réglaient le problème mais demandaient deux gestes. Ici, on tape
+   quatre chiffres d'affilée : le deux-points se pose tout seul après les
+   heures, et la saisie s'arrête d'elle-même. */
+function ChampHeure({ valeur, onChange, style }) {
+  const saisir = (brut) => {
+    const n = brut.replace(/\D/g, "").slice(0, 4);
+    if (!n) return onChange("");
+    let h = n.slice(0, 2);
+    /* Un premier chiffre supérieur à 2 ne peut être qu'une heure d'un chiffre :
+       taper « 9 » puis « 30 » doit donner 09:30, pas 93:0. */
+    if (n.length === 1 && Number(n) > 2) h = `0${n}`;
+    const m = n.length === 1 && Number(n) > 2 ? "" : n.slice(2);
+    const hh = Math.min(23, Number(h || 0));
+    if (n.length <= 2 && !(n.length === 1 && Number(n) > 2)) return onChange(n);
+    const mm = Math.min(59, Number(m || 0));
+    return onChange(
+      m.length === 0
+        ? `${String(hh).padStart(2, "0")}:`
+        : `${String(hh).padStart(2, "0")}:${m.length === 1 ? m : String(mm).padStart(2, "0")}`
+    );
+  };
   return (
-    <div style={{ ...S.panneau, padding: mobile ? "14px 15px" : "16px 18px" }}>
+    <input
+      type="text"
+      value={valeur}
+      onChange={(e) => saisir(e.target.value)}
+      onBlur={() => {
+        /* À la sortie du champ, on complète ce qui manque : « 21 » vaut 21:00. */
+        const n = String(valeur || "").replace(/\D/g, "");
+        if (!n) return;
+        const hh = Math.min(23, Number(n.slice(0, 2) || 0));
+        const mm = Math.min(59, Number(n.slice(2) || 0));
+        onChange(`${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`);
+      }}
+      inputMode="numeric"
+      placeholder="hh:mm"
+      aria-label="Heure"
+      maxLength={5}
+      style={style}
+    />
+  );
+}
+
+function LigneReglage({ mobile, titre, aide, children }) {
+  /* Hauteur pleine : deux blocs côte à côte doivent s'aligner en bas, même si
+     l'un porte une aide plus longue que l'autre. */
+  return (
+    <div style={{ ...S.panneau, padding: mobile ? "14px 15px" : "16px 18px", height: "100%", display: "flex", flexDirection: "column" }}>
       <div style={{ ...S.eyebrow, marginBottom: aide ? 4 : 9 }}>{titre}</div>
       {aide && <div style={{ fontSize: 13, lineHeight: 1.5, color: "var(--encre2)", marginBottom: 9 }}>{aide}</div>}
-      {children}
+      <div style={{ marginTop: "auto" }}>{children}</div>
     </div>
   );
 }
@@ -6332,7 +6767,7 @@ function VueParametres({ mobile, wrap, theme, setTheme, systemeId, setSysteme, d
         ouvert={sectionsOuvertes.includes("compteur")}
         basculer={() => basculerSection("compteur")}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14 }}>
         <LigneReglage mobile={mobile} titre="Système de comptage" aide="Utilisé par le compteur, les exercices et la fiche.">
           <select value={systemeId} onChange={(e) => setSysteme(e.target.value)} style={styleSelect}>
             {ORDRE.map((id) => (
@@ -6426,7 +6861,7 @@ function VueParametres({ mobile, wrap, theme, setTheme, systemeId, setSysteme, d
       >
         {/* Deux menus courts tiennent sur une ligne : la section passe de cinq
             blocs pleine largeur à trois. */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14 }}>
           <LigneReglage mobile={mobile} titre="Thème">
             <select
               value={theme ?? "auto"}
@@ -6440,7 +6875,7 @@ function VueParametres({ mobile, wrap, theme, setTheme, systemeId, setSysteme, d
               <option value="velours">Velours rouge</option>
             </select>
           </LigneReglage>
-          <LigneReglage mobile={mobile} titre="Enseigne du logo">
+          <LigneReglage mobile={mobile} titre="Logo">
             <select
               value={reglages.enseigne ?? "pique"}
               onChange={(e) => majReglage("enseigne", e.target.value)}
@@ -6462,8 +6897,8 @@ function VueParametres({ mobile, wrap, theme, setTheme, systemeId, setSysteme, d
           />
         </LigneReglage>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14, alignItems: "start" }}>
-            <LigneReglage mobile={mobile} titre="Jeu de sons" aide={
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: mobile ? 10 : 14 }}>
+            <LigneReglage mobile={mobile} titre="Son" aide={
                 (reglages.jeuSons ?? "marque") === "marque"
                   ? "Se distingue mieux quand les réponses s'enchaînent vite."
                   : "Se fait plus discret sur une longue série."
@@ -6922,12 +7357,8 @@ function VueLexique({ mobile, wrap }) {
                         </span>
                       )}
                     </span>
-                    <span
-                      className="mono"
-                      aria-hidden="true"
-                      style={{ fontSize: 15, color: ouvert ? "var(--bleu)" : "var(--encre2)", flexShrink: 0, lineHeight: 1 }}
-                    >
-                      {ouvert ? "−" : "+"}
+                    <span style={{ color: ouvert ? "var(--bleu)" : "var(--encre2)", flexShrink: 0, display: "flex" }}>
+                      <Chevron ouvert={ouvert} />
                     </span>
                   </button>
 
@@ -6954,6 +7385,23 @@ function VueLexique({ mobile, wrap }) {
    ============================================================ */
 
 function VueLectures({ mobile, wrap }) {
+  /* Un seul livre déplié à la fois, comme les termes du lexique : le titre et
+     l'auteur suffisent à parcourir la liste, la présentation attend qu'on la
+     demande. */
+  const [ouvert, setOuvert] = useState(null);
+
+  useEffect(() => {
+    if (!ouvert) return;
+    const dehors = (ev) => {
+      if (ev.target.closest?.("[data-livre]")) return;
+      if (ev.target.closest?.("[data-superpose], [role='dialog']")) return;
+      if (!ev.target.closest?.("button, a, input, select, textarea, label")) return;
+      setOuvert(null);
+    };
+    document.addEventListener("click", dehors, true);
+    return () => document.removeEventListener("click", dehors, true);
+  }, [ouvert]);
+
   return (
     <div style={wrap}>
       <div style={{ padding: mobile ? "22px 0 18px" : "44px 0 20px", maxWidth: 640 }}>
@@ -6974,22 +7422,67 @@ function VueLectures({ mobile, wrap }) {
           </div>
           <div style={{ display: "grid", gap: 10 }}>
             {g.livres.map((l) => (
-              <div key={l.titre} style={{ ...S.panneau, padding: mobile ? "15px 15px" : "18px 20px" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "2px 10px" }}>
-                  <span
+              <div
+                key={l.titre}
+                data-livre="1"
+                style={{
+                  ...S.panneau,
+                  borderLeft: `3px solid ${ouvert === l.titre ? "var(--bleu)" : "var(--regle)"}`,
+                  overflow: "hidden",
+                }}
+              >
+                <button
+                  onClick={(ev) => {
+                    const ouvrait = ouvert !== l.titre;
+                    setOuvert(ouvrait ? l.titre : null);
+                    if (ouvrait) amener(ev.currentTarget.parentElement);
+                  }}
+                  aria-expanded={ouvert === l.titre}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 10,
+                    padding: mobile ? "14px 15px" : "16px 20px",
+                    textAlign: "left",
+                  }}
+                >
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span
+                      style={{
+                        display: "block",
+                        fontWeight: 700,
+                        fontSize: mobile ? 16 : 17.5,
+                        letterSpacing: "-.01em",
+                      }}
+                    >
+                      {l.titre}
+                    </span>
+                    <span style={{ display: "block", fontSize: 13.5, color: "var(--encre2)", marginTop: 2 }}>
+                      {l.auteur}{" "}
+                      <span className="mono" style={{ fontSize: 11.5, color: "var(--or)" }}>
+                        {l.annee}
+                      </span>
+                    </span>
+                  </span>
+                  <span style={{ color: ouvert === l.titre ? "var(--bleu)" : "var(--encre2)", display: "flex", marginTop: 4 }}>
+                    <Chevron ouvert={ouvert === l.titre} />
+                  </span>
+                </button>
+                {ouvert === l.titre && (
+                  <p
+                    className="bjc-pop"
                     style={{
-                      fontFamily: "'Public Sans', ui-sans-serif, sans-serif",
-                      fontWeight: 700,
-                      fontSize: mobile ? 16.5 : 18,
-                      letterSpacing: "-.01em",
+                      fontSize: 14.5,
+                      lineHeight: 1.6,
+                      margin: 0,
+                      padding: mobile ? "0 15px 14px" : "0 20px 16px",
+                      color: "var(--encre2)",
                     }}
                   >
-                    {l.titre}
-                  </span>
-                  <span style={{ fontSize: 14, color: "var(--encre2)" }}>{l.auteur}</span>
-                  <span className="mono" style={{ fontSize: 11.5, color: "var(--or)" }}>{l.annee}</span>
-                </div>
-                <p style={{ fontSize: 14.5, lineHeight: 1.6, margin: "10px 0 12px", color: "var(--encre2)" }}>{l.texte}</p>
+                    {l.texte}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -7680,6 +8173,7 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
   const panneauSaisie = useRef(null);
   const empreinte = useRef(null);
   const [abandonDemande, setAbandonDemande] = useState(null);
+  const [alerteVue, setAlerteVue] = useState(false);
   /* Champ actif avant l'ouverture de la fenêtre : on y revient sans laisser le
      navigateur faire défiler la page pour l'amener à l'écran. */
   const focusAvant = useRef(null);
@@ -7717,7 +8211,17 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
     setLieu("");
     empreinte.current = JSON.stringify([m.date, m.heure, "", "", "", "", ""]);
     setSaisieOuverte(true);
-    amener(panneauSaisie.current);
+    /* Placement déterministe plutôt qu'un centrage : le panneau dépasse
+       souvent la hauteur de l'écran, et le centrer le faisait commencer
+       hors champ. */
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        const el = panneauSaisie.current;
+        if (!el) return;
+        const y = window.scrollY + el.getBoundingClientRect().top - hautCollé() - 8;
+        window.scrollTo(0, Math.max(0, y));
+      })
+    );
   };
 
   /* Un appui ailleurs alors qu'un formulaire est ouvert et modifié : on
@@ -8363,6 +8867,105 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
             </div>
           </div>
 
+          {/* L'alerte de perte : une ligne centrée, teintée selon la gravité.
+              Pas de version verte — ce bandeau signale un risque, il ne résume
+              pas la période. Sans perte, il n'a rien à dire et disparaît. */}
+          {alertePlafond && (
+            <div
+              role="alert"
+              style={{
+                background:
+                  alertePlafond.part >= 100
+                    ? "color-mix(in srgb, var(--rouge) 14%, var(--papier))"
+                    : "color-mix(in srgb, var(--or) 16%, var(--papier))",
+                borderRadius: 3,
+                marginBottom: 12,
+                overflow: "hidden",
+              }}
+            >
+              <button
+                onClick={() => setAlerteVue((o) => !o)}
+                aria-expanded={alerteVue}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 9,
+                  padding: mobile ? "11px 13px" : "12px 16px",
+                  color: alertePlafond.part >= 100 ? "var(--rouge)" : "var(--or)",
+                }}
+              >
+                {/* Triangle dessiné plutôt qu'un caractère : « ⚠ » et « △ »
+                    ne sont pas rendus de la même façon d'une police à l'autre,
+                    et chez vous le point d'exclamation manquait. */}
+                <svg width="15" height="14" viewBox="0 0 16 15" aria-hidden="true" style={{ flexShrink: 0, display: "block" }}>
+                  <path
+                    d="M8 0.9 L15.4 13.6 H0.6 Z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.4"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M8 5.2 V9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  <circle cx="8" cy="11.2" r="0.85" fill="currentColor" />
+                </svg>
+                <span style={{ fontSize: mobile ? 13.5 : 14 }}>
+                  <b className="mono">−{alertePlafond.perte.toFixed(0)} €</b> cette{" "}
+                  {periode === "mois" ? "mois-ci" : "semaine"} ·{" "}
+                  {alertePlafond.part >= 100 ? "plafond dépassé" : `${alertePlafond.part.toFixed(0)} % du plafond`}
+                </span>
+                {/* Un chevron plutôt qu'un « + » : il dit que ça se déroule,
+                    là où le plus laissait attendre un ajout. */}
+                <svg
+                  width="11"
+                  height="7"
+                  viewBox="0 0 12 8"
+                  aria-hidden="true"
+                  style={{
+                    flexShrink: 0,
+                    display: "block",
+                    transform: alerteVue ? "rotate(180deg)" : "none",
+                    transition: "transform .15s ease",
+                  }}
+                >
+                  <path d="M1 1.5 L6 6.5 L11 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              {alerteVue && (
+                <div className="bjc-pop" style={{ padding: mobile ? "0 13px 13px" : "0 16px 14px" }}>
+                  <div
+                    style={{
+                      position: "relative",
+                      height: 6,
+                      borderRadius: 999,
+                      background: "color-mix(in srgb, var(--encre) 12%, transparent)",
+                      overflow: "hidden",
+                      marginBottom: 9,
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width: `${Math.min(100, alertePlafond.part)}%`,
+                        background: alertePlafond.part >= 100 ? "var(--rouge)" : "var(--or)",
+                      }}
+                    />
+                  </div>
+                  <div style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--encre2)", textAlign: "center" }}>
+                    {alertePlafond.perte.toFixed(0)} € perdus sur un plafond de {plafond} €.
+                    {alertePlafond.part >= 100 &&
+                      " Ce plafond est une limite que vous vous êtes fixée, pas un seuil à partir duquel la chance tournerait."}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {onglet === "analyse" && (
           <>
           <input
@@ -8373,30 +8976,6 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
             style={{ display: "none" }}
           />
 
-          {alertePlafond && (
-            <div
-              style={{
-                ...S.panneau,
-                borderLeft: `3px solid ${alertePlafond.part >= 100 ? "var(--rouge)" : "var(--or)"}`,
-                background: alertePlafond.part >= 100 ? "var(--err-fond)" : "var(--panneau)",
-                padding: mobile ? "13px 14px" : "15px 18px",
-                marginBottom: 12,
-                fontSize: 14.5,
-                lineHeight: 1.55,
-              }}
-            >
-              <b>
-                {alertePlafond.part >= 100
-                  ? "Plafond de perte dépassé."
-                  : alertePlafond.part >= 70
-                  ? "Plafond de perte bientôt atteint."
-                  : "Perte en cours sur la période."}
-              </b>{" "}
-              {alertePlafond.perte.toFixed(0)} € perdus cette {periode === "mois" ? "mois-ci" : "semaine"}, sur un
-              plafond de {plafond} € — soit {alertePlafond.part.toFixed(0)} %.
-              {alertePlafond.part >= 100 && " Ce plafond est une limite que vous vous êtes fixée, pas un seuil à partir duquel la chance tournerait."}
-            </div>
-          )}
 
           <div
             style={{
@@ -8499,7 +9078,7 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
                   {(mesure.taux >= 0 ? "+" : "−") + Math.abs(mesure.taux).toFixed(2).replace(".", ",")} %
                 </span>
                 <span className="mono" style={{ fontSize: 13, color: "var(--encre2)" }}>
-                  sur {mesure.engage.toFixed(0)} € engagés · {mesure.mains} mains · {mesure.sessions} session
+                  sur {mesure.engage.toFixed(0)} € déposés · {mesure.mains} mains · {mesure.sessions} session
                   {mesure.sessions > 1 ? "s" : ""}
                 </span>
               </div>
@@ -8508,7 +9087,7 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
                   const marge = (1.15 / Math.sqrt(mesure.mains)) * 100;
                   return mesure.mains < 20000
                     ? `Ce chiffre est encore dominé par le hasard : sur ${mesure.mains} mains, l'incertitude est de ±${marge.toFixed(1).replace(".", ",")} %, pour une espérance qui se joue autour de 0,5 %. Il faut plusieurs dizaines de milliers de mains pour qu'il devienne lisible.`
-                    : `Avec ${mesure.mains} mains, l'incertitude tombe à ±${marge.toFixed(1).replace(".", ",")} %. En stratégie de base, une table courante coûte entre 0,4 et 0,6 % des sommes engagées ; un écart nettement plus défavorable suggère des erreurs de jeu ou des règles moins bonnes que prévu.`;
+                    : `Avec ${mesure.mains} mains, l'incertitude tombe à ±${marge.toFixed(1).replace(".", ",")} %. En stratégie de base, une table courante coûte entre 0,4 et 0,6 % des sommes déposées ; un écart nettement plus défavorable suggère des erreurs de jeu ou des règles moins bonnes que prévu.`;
                 })()}
               </p>
               </div>
@@ -8896,10 +9475,17 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
 
           {onglet === "sessions" && (
           <>
-          {!enCours && (
-            <div ref={(el) => { panneauSaisie.current = el; zoneFormulaire.current = el; }} style={{ ...S.panneau, padding: mobile ? "15px 15px" : "18px 20px" }}>
+          {/* Le panneau d'encodage reste en place pendant une correction : il
+              disparaissait, et l'on ne savait plus comment revenir à une
+              saisie neuve. Il est seulement mis en retrait. */}
+          {true && (
+            <div
+              ref={(el) => { panneauSaisie.current = el; zoneFormulaire.current = el; }}
+              style={{ ...S.panneau, padding: mobile ? "15px 15px" : "18px 20px", opacity: enCours ? 0.45 : 1 }}
+            >
               <button
-                onClick={() => basculerSaisie()}
+                onClick={() => !enCours && basculerSaisie()}
+                disabled={!!enCours}
                 aria-expanded={saisieOuverte}
                 className="bjc-tap"
                 style={{
@@ -8916,7 +9502,7 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
                   textAlign: "center",
                 }}
               >
-                {saisieOuverte ? "Fermer" : "Encoder une session"}
+                {enCours ? "Correction en cours" : saisieOuverte ? "Fermer" : "Encoder une session"}
               </button>
               {saisieOuverte && (
               <div className="bjc-pop" style={{ marginTop: 12 }}>
@@ -8942,7 +9528,7 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
                 </label>
                 <label style={{ display: "block" }}>
                   <div style={{ ...S.eyebrow, marginBottom: 5 }}>Heure</div>
-                  <input type="time" value={heure} onChange={(e) => setHeure(e.target.value)} style={styleChamp} />
+                  <ChampHeure valeur={heure} onChange={setHeure} style={styleChamp} />
                 </label>
               </div>
 
@@ -9080,7 +9666,13 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
                     </div>
                     <div style={{ fontSize: 12.5, color: "var(--encre2)", marginTop: 2 }}>
                       {s.lieu ? s.lieu + " · " : ""}
-                      {s.depot.toFixed(2).replace(".", ",")} € engagés, {s.retrait.toFixed(2).replace(".", ",")} € retirés
+                      {/* « Déposé » plutôt qu'« engagé » : c'est le mot du
+                          formulaire de saisie et celui des sites de jeu. La
+                          flèche remplace la virgule — elle dit le sens du
+                          mouvement, ce qu'une virgule ne fait pas. */}
+                      {s.depot.toFixed(2).replace(".", ",")} € déposés{" "}
+                      <span style={{ color: "var(--encre2)" }}>→</span>{" "}
+                      {s.retrait.toFixed(2).replace(".", ",")} € retirés
                       {/* La mise ne se rattache au nombre de mains que si
                           celui-ci est renseigné ; seule, elle est nommée. */}
                       {s.mains && s.mise
@@ -9169,7 +9761,7 @@ function VueJournal({ mobile, wrap, sessions, setSessions, reglages, proteger, c
                   </label>
                   <label style={{ display: "block" }}>
                     <div style={{ ...S.eyebrow, marginBottom: 5 }}>Heure</div>
-                    <input type="time" value={heure} onChange={(e) => setHeure(e.target.value)} style={styleChamp} />
+                    <ChampHeure valeur={heure} onChange={setHeure} style={styleChamp} />
                   </label>
                 </div>
 
@@ -9485,14 +10077,14 @@ function VueAccueil({ sys, allerA, mobile, wrap, enseigne }) {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: mobile ? 8 : 12,
-          padding: mobile ? "14px 0 18px" : "36px 0 30px",
+          gap: mobile ? 6 : 12,
+          padding: mobile ? "8px 0 12px" : "36px 0 30px",
         }}
       >
         <svg
           viewBox="0 0 64 64"
           aria-label="Big Jack Theory"
-          style={{ width: mobile ? 54 : 76, height: "auto", display: "block" }}
+          style={{ width: mobile ? 46 : 76, height: "auto", display: "block" }}
         >
           <circle cx="32" cy="32" r="29" fill="var(--encre)" />
           <circle cx="32" cy="32" r="25" fill="none" stroke="var(--papier)" strokeWidth="8.5"
@@ -9505,7 +10097,7 @@ function VueAccueil({ sys, allerA, mobile, wrap, enseigne }) {
         <h1
           style={{
             margin: 0,
-            fontSize: mobile ? 26 : 36,
+            fontSize: mobile ? 23 : 36,
             fontWeight: 700,
             letterSpacing: "-.008em",
             lineHeight: 1,
@@ -9764,18 +10356,33 @@ export default function App() {
        jalon consommé faisait sortir de l'application sans avertissement. */
     try {
       history.replaceState({ bjt: 0 }, "");
-      /* Quatre jalons de départ plutôt que deux : après un rafraîchissement,
-         un jalon perdu suffisait à faire sortir l'application sans que
-         l'avertissement ait pu s'afficher. La marge ne coûte rien. */
-      history.pushState({ bjt: 1 }, "");
-      history.pushState({ bjt: 2 }, "");
-      history.pushState({ bjt: 3 }, "");
-      history.pushState({ bjt: 4 }, "");
-      JALONS.restants = 4;
+      /* Après un rafraîchissement, les jalons posés au montage ne prenaient
+         pas toujours : le premier appui sortait alors de l'application sans
+         avertissement, alors qu'après une navigation tout redevenait normal.
+         On les repose donc plusieurs fois — au montage, peu après, et à chaque
+         retour d'arrière-plan. Poser un jalon de trop est sans conséquence. */
+      const garnir = () => {
+        try {
+          while (JALONS.restants < 4) {
+            JALONS.restants += 1;
+            history.pushState({ bjt: JALONS.restants }, "");
+          }
+        } catch {
+          /* sans conséquence */
+        }
+      };
+      JALONS.restants = 0;
+      garnir();
+      setTimeout(garnir, 250);
+      setTimeout(garnir, 1200);
+      window.addEventListener("pageshow", garnir);
+      document.addEventListener("visibilitychange", garnir);
+      GARNIR.f = garnir;
       /* Après un rafraîchissement, le chemin est retrouvé : il lui faut autant
          de jalons qu'il compte de pas, sinon le retour sort trop tôt. */
       if (histoire.current.onglet) poserEtape();
       if (histoire.current.page) poserEtape();
+
     } catch {
       /* sans conséquence */
     }

@@ -33,6 +33,8 @@ const RETOUR = { pile: [] };
 /* Compte des jalons d'historique encore en réserve : la sortie doit tous les
    franchir d'un coup. */
 const JALONS = { restants: 0 };
+/* Référence vers la garniture des jalons, posée par l'application au montage. */
+const GARNIR = { f: null };
 
 /* Un jalon d'historique est posé à chaque pas en avant — page, sous-onglet,
    exercice ouvert. Le bouton du téléphone en consomme un par appui, et rien
@@ -83,4 +85,4 @@ function consommerRetour() {
 /* Même présentation que les sous-onglets du journal : colonnes égales, trait
    sous l'onglet actif. Le balayage latéral passe d'un onglet au suivant. */
 
-export { EST_STRATEGIE, EST_THEORIE, GROUPE_STRATEGIE, GROUPE_THEORIE, HAUTEUR_SOUSNAV, JALONS, PAGE_MERE, RETOUR, consommerRetour, enregistrerChemin, groupeDe, poserEtape, poserRetour , GROUPE_JOURNAL, EST_JOURNAL};
+export { EST_STRATEGIE, EST_THEORIE, GROUPE_STRATEGIE, GROUPE_THEORIE, HAUTEUR_SOUSNAV, JALONS, PAGE_MERE, RETOUR, consommerRetour, enregistrerChemin, groupeDe, poserEtape, poserRetour , GROUPE_JOURNAL, EST_JOURNAL, GARNIR};
