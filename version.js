@@ -1,7 +1,7 @@
 /* Numéro de version et date, lus par les paramètres et la sauvegarde. */
 
-const VERSION = "1.47.8";
-const DATE_VERSION = "29 août 2026";
+const VERSION = "1.47.9";
+const DATE_VERSION = "3 septembre 2026";
 
 /* Clé de secours. Saisie à la place du code de protection, elle le retire et
    rend la main. À changer ici, puis à republier : c'est le seul moyen de
