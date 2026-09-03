@@ -136,10 +136,13 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.48.1**, du 3 septembre 2026.
+Version actuelle : **1.51.1**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.51.1 | jauges dorées à l'approche du seuil, marque de validation |
+| 1.50.1 | progression suivie par système ; exercices limités à ce que le système permet |
+| 1.49.1 | « prêt pour la table » : le vrai compte n'est exigé que là où il sert |
 | 1.48.1 | chaîne de construction : compilation, report de version, tests |
 | 1.47.9 | « Effacer l'historique » remplace « Tout effacer » dans les exercices |
 | 1.47.8 | explication de la remise à zéro déplacée dans la confirmation |
