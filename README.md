@@ -136,11 +136,15 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.59.3**, du 3 septembre 2026.
+Version actuelle : **1.62.2**, du 3 septembre 2026.
 
 | | |
 |---|---|
 | 1.58.2 | la barre de navigation reste en bas à toutes les largeurs |
+| 1.62.2 | « Correction en cours » devient un bouton qui annule la correction |
+| 1.62.1 | recalage du journal : la hauteur des barres collées est calculée, non lue |
+| 1.61.1 | sessions en cours : encoder le dépôt seul, compléter le retrait plus tard |
+| 1.60.1 | l'analyse du journal devient un composant à part, sans rien changer à l'écran |
 | 1.59.3 | le recalage vise le bandeau depuis la recherche, les onglets sinon |
 | 1.59.2 | recherche et appui sur une case se relaient au lieu de coexister |
 | 1.59.1 | le bandeau du tableau suit l'origine du choix, et cesse d'être collé |
