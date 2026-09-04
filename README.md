@@ -36,7 +36,7 @@ Les commandes séparées, si besoin :
 | `npm run reporter` | reporte le numéro de `src/version.js` vers `sw.js` et ce README |
 | `npm run verifier` | contrôle la concordance sans rien modifier |
 | `npm run construire` | compile et insère le bundle dans les deux fichiers HTML |
-| `npm test` | lance les 99 vérifications sur le fichier compilé |
+| `npm test` | lance la suite de vérifications sur le fichier compilé |
 
 **`src/version.js` fait foi** pour le numéro de version. C'est le seul endroit
 où on l'écrit à la main. Une entrée reste à ajouter au tableau des versions
@@ -136,10 +136,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.55.1**, du 3 septembre 2026.
+Version actuelle : **1.56.1**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.56.1 | polices embarquées : plus aucun appel à un serveur tiers |
 | 1.55.1 | le jeton de l'accueil se lance, et refuse de rendre un présage |
 | 1.54.5 | accueil : coefficients relevés, le vide en bas se comble |
 | 1.54.4 | accueil élastique : tailles réglées sur la hauteur de l'écran |

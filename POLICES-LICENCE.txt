@@ -1,0 +1,25 @@
+Polices embarquées dans Big Jack Theory
+=======================================
+
+Trois familles, toutes sous SIL Open Font License 1.1, qui autorise l'usage,
+la modification et la redistribution, y compris commerciale, à condition que
+les fichiers ne soient pas vendus seuls et que cette notice les accompagne.
+
+  Source Serif 4   — Frank Grießhammer, Adobe
+                     https://github.com/adobe-fonts/source-serif
+                     Copyright 2014-2023 Adobe (http://www.adobe.com/)
+
+  Public Sans      — Dan O. Williams, Pablo Impallari, Rodrigo Fuenzalida
+                     https://github.com/uswds/public-sans
+                     Copyright 2015 Impallari Type
+                     Domaine public pour les modifications de l'USWDS
+
+  JetBrains Mono   — Philipp Nurullin, Konstantin Bulenkov
+                     https://github.com/JetBrains/JetBrainsMono
+                     Copyright 2020 The JetBrains Mono Project Authors
+
+Seuls les jeux latins sont embarqués, en deux graisses par famille, soit sept
+fichiers pour 128 Ko. Ils ont été extraits des paquets Fontsource, qui les
+redistribue tels que publiés par leurs auteurs.
+
+Texte intégral de la licence : https://openfontlicense.org
