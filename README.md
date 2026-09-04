@@ -136,10 +136,18 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.56.1**, du 3 septembre 2026.
+Version actuelle : **1.59.3**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.58.2 | la barre de navigation reste en bas à toutes les largeurs |
+| 1.59.3 | le recalage vise le bandeau depuis la recherche, les onglets sinon |
+| 1.59.2 | recherche et appui sur une case se relaient au lieu de coexister |
+| 1.59.1 | le bandeau du tableau suit l'origine du choix, et cesse d'être collé |
+| 1.58.2 | la barre de navigation est en bas à toutes les largeurs |
+| 1.58.1 | en-tête bureau : « Accueil » retiré, nom sur deux lignes comme sur téléphone |
+| 1.57.1 | le résultat s'affiche au-dessus de la recherche, qui reste visible |
+| 1.56.2 | la compilation produit aussi enveloppe.html, le gabarit sans bundle |
 | 1.56.1 | polices embarquées : plus aucun appel à un serveur tiers |
 | 1.55.1 | le jeton de l'accueil se lance, et refuse de rendre un présage |
 | 1.54.5 | accueil : coefficients relevés, le vide en bas se comble |
