@@ -136,10 +136,20 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.51.1**, du 3 septembre 2026.
+Version actuelle : **1.54.2**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.54.2 | phrase du jour centrée à l'accueil |
+| 1.54.1 | accueil refondu : une liste, l'enseigne en filigrane, la phrase du jour |
+| 1.53.7 | recalage : la hauteur des barres est calculée, non mesurée |
+| 1.53.6 | recalage auto-correctif, place garantie sous la barre d'onglets |
+| 1.53.5 | note de l'assurance reformulée |
+| 1.53.4 | mention de l'assurance ramenée à une note de bas de tableau |
+| 1.53.3 | assurance au pied du tableau, libellés regroupés qui ne débordent plus |
+| 1.53.2 | liste des abandons retirée, mention de l'assurance dans la légende |
+| 1.53.1 | tableau des mains : un seul point de calage pour recherche, case et onglets |
+| 1.52.1 | fautes à revoir pour quatre exercices, historique replié à cinq séries |
 | 1.51.1 | jauges dorées à l'approche du seuil, marque de validation |
 | 1.50.1 | progression suivie par système ; exercices limités à ce que le système permet |
 | 1.49.1 | « prêt pour la table » : le vrai compte n'est exigé que là où il sert |
