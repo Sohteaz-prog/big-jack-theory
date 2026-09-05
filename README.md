@@ -136,10 +136,14 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.64.1**, du 3 septembre 2026.
+Version actuelle : **1.67.2**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.67.2 | la partie n'affiche un vrai compte que là où le système en emploie un |
+| 1.67.1 | la partie simulée devient le sixième exercice |
+| 1.66.1 | moteur de la partie simulée, éprouvé par 51 vérifications |
+| 1.65.1 | les thèmes tapis vert et velours rouge sont retirés |
 | 1.64.1 | le choix du graphique reste collé au titre, quel que soit le graphique |
 | 1.63.3 | le formulaire de correction s'ouvre à nouveau sur toutes les sessions |
 | 1.63.2 | le bandeau du tableau ne colle plus aux champs de recherche |
