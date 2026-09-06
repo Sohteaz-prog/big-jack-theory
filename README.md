@@ -136,10 +136,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.68.4**, du 3 septembre 2026.
+Version actuelle : **1.68.5**, du 3 septembre 2026.
 
 | | |
 |---|---|
+| 1.68.5 | un seul bouton rond : reprise à vide, doublement dès qu'il y a une mise |
 | 1.68.4 | tapis vide au départ, doublement de mise, reprise de la donne précédente |
 | 1.68.3 | donnes enchaînées, cave et limites réglables, libellés revus |
 | 1.68.2 | boutons de jeu visibles, jeton posé, retrait du dernier, verdict au centre |
