@@ -136,10 +136,11 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.72.1**, du 8 septembre 2026.
+Version actuelle : **1.72.2**, du 8 septembre 2026.
 
 | | |
 |---|---|
+| 1.72.2 | la fenêtre d'explication respire moins en haut et en bas |
 | 1.72.1 | les pourcentages du bandeau s'ouvrent et disent d'où ils viennent |
 | 1.71.3 | la partie rejoint l'historique des séries sous son nom |
 | 1.71.2 | quitter un exercice demande confirmation par tous les chemins, flèche de l'en-tête comprise |
