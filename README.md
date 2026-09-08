@@ -136,10 +136,17 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.68.5**, du 3 septembre 2026.
+Version actuelle : **1.70.2**, du 7 septembre 2026.
 
 | | |
 |---|---|
+| 1.70.2 | la fenêtre sur l'assurance se ferme à nouveau |
+| 1.70.1 | la partie s'arrête avant la coupe et son bilan ramène aux réglages |
+| 1.69.4 | les extrêmes de la courbe sont marqués par des traits, non des ovales |
+| 1.69.3 | le plafond mensuel ne plante plus ; courbe écartée des bords |
+| 1.69.2 | la courbe cumulée ne touche plus les bords du cadre |
+| 1.69.1 | le plafond compte les sessions en cours et annonce ce qui reste en jeu |
+| 1.68.6 | la confirmation de sortie ne se répète plus ; cartes du croupier échelonnées |
 | 1.68.5 | un seul bouton rond : reprise à vide, doublement dès qu'il y a une mise |
 | 1.68.4 | tapis vide au départ, doublement de mise, reprise de la donne précédente |
 | 1.68.3 | donnes enchaînées, cave et limites réglables, libellés revus |
