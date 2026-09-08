@@ -136,10 +136,16 @@ chronologique : le troisième nombre avance tant qu'on retouche la même partie 
 l'application, le deuxième dès qu'on passe à une autre. Un ajout majeur donnerait
 2.0.1.
 
-Version actuelle : **1.70.2**, du 7 septembre 2026.
+Version actuelle : **1.71.3**, du 7 septembre 2026.
 
 | | |
 |---|---|
+| 1.71.2 | la flèche de l'en-tête ne quitte plus un exercice sans prévenir |
+| 1.71.3 | la partie rejoint l'historique des séries sous son nom |
+| 1.71.2 | quitter un exercice demande confirmation par tous les chemins |
+| 1.71.1 | le bandeau se colle au-dessus du tableau au lieu de le pousser |
+| 1.70.4 | les colonnes des trois tableaux sont enfin de largeur égale |
+| 1.70.3 | annulation en deux appuis, panneaux non coupés, choix en doré, légende allégée |
 | 1.70.2 | la fenêtre sur l'assurance se ferme à nouveau |
 | 1.70.1 | la partie s'arrête avant la coupe et son bilan ramène aux réglages |
 | 1.69.4 | les extrêmes de la courbe sont marqués par des traits, non des ovales |
